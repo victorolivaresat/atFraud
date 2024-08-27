@@ -1,0 +1,49 @@
+Cmd migration:
+npx sequelize-cli db:migrate 
+
+
+Revert
+npx sequelize-cli db:migrate:undo
+
+<======================================================>
+
+Cmd seeders
+npx sequelize-cli db:seed:all 
+
+<======================================================>
+
+Cmd Tables 
+npx sequelize-cli migration:generate --name create-users
+npx sequelize-cli migration:generate --name create-eventsHv
+npx sequelize-cli migration:generate --name create-testsHv
+npx sequelize-cli migration:generate --name create-eventsSamsung
+npx sequelize-cli migration:generate --name create-testsSamsung
+
+npx sequelize-cli migration:generate --name create-suportEventHv
+npx sequelize-cli migration:generate --name create-suportEventSamsung
+
+
+npx sequelize-cli migration:generate --name create-interbankCompany
+npx sequelize-cli migration:generate --name create-bcpAlert
+npx sequelize-cli migration:generate --name create-bcpNotify
+npx sequelize-cli migration:generate --name create-bcpOwnAccount
+npx sequelize-cli migration:generate --name create-cncBbva
+<======================================================>
+Creacion Tablas Por sequelize para la Plataforma de Fraude
+
+npx sequelize-cli migration:generate --name create-analista
+npx sequelize-cli migration:generate --name create-Canal
+npx sequelize-cli migration:generate --name create-Caso
+npx sequelize-cli migration:generate --name create-Cliente
+npx sequelize-cli migration:generate --name create-Documento
+npx sequelize-cli migration:generate --name create-Empresa
+npx sequelize-cli migration:generate --name create-Evaluacion
+npx sequelize-cli migration:generate --name create-RelacionadoCaso
+npx sequelize-cli migration:generate --name create-Supervisor
+npx sequelize-cli migration:generate --name create-TipoCliente
+npx sequelize-cli migration:generate --name create-Transaccion
+npx sequelize-cli migration:generate --name create-Transaccion
+npx sequelize-cli migration:generate --name create-Ubigeo
+
+
+
