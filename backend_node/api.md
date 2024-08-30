@@ -10,8 +10,8 @@ ___
 #### Request Body
 ```json
 {
-  "email": "user@example.com",
-  "password": "password123"
+  "email": "victor.olivares@apuestatotal.com",
+  "password": "password"
 }
 ```
 #### Response: Success: 200 OK
@@ -19,8 +19,9 @@ ___
 {
   "success": true,
   "id": 1,
-  "email": "user@example.com",
-  "token": "your.jwt.token"
+  "name": "Victor Olivares",
+  "email": "victor.olivares@apuestatotal.com",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ..."
 }
 ```
 #### Error: 400 Bad Request / 404 Not Found / 500 Internal Server Error
@@ -56,8 +57,9 @@ ___
 ### Response Success: 200 OK
 ```json
 {
-  "userId": 1,
-  "email": "user@example.com",
+  "userId": 11,
+  "name": "Victor Olivares",
+  "email": "victor.olivares@apuestatotal.com",
   "message": "Authorized",
   "success": true
 }
@@ -78,19 +80,17 @@ ___
 ### Request Body
 ```json
 {
-  "name": "John Doe",
-  "email": "john.doe@example.com",
-  "pass": "password123",
+  "name": "Jenson Paico",
+  "email": "jenson.paico@apuestatotal.com",
+  "pass": "password",
   "image": "https://picsum.photos/200",
   "companyId": 1,
   "typeAnalystId": 1,
   "flgActive": true,
-  "flgChangePass": false,
-  "flgMailBox": false,
-  "changePassDate": "2024-08-15T22:24:32.423Z",
+  "flgChangePass": true,
+  "flgMailBox": true,
   "cantLog": 0,
-  "flgBlocked": false,
-  "rememberToken": null
+  "flgBlocked": false
 }
 ```
 ### Response Success: 201 Created
@@ -98,22 +98,22 @@ ___
 {
   "message": "Analyst created successfully",
   "analyst": {
-    "analystId": 1,
-    "name": "John Doe",
-    "email": "john.doe@example.com",
-    "pass": "$2b$10$hashedpassword",
+    "createdAt": "2024-08-30T04:24:06.343Z",
+    "updatedAt": "2024-08-30T04:24:06.343Z",
+    "changePassDate": "2024-08-30T04:24:06.343Z",
+    "analystId": 12,
+    "name": "Jenson Paico",
+    "email": "jenson.paico@apuestatotal.com",
+    "pass": "$2b$10$puOg6ptPuj/fgOLM5ah.U.EQgUyRlN/HzH2DYKUrABG5cpmfkIWM6",
     "image": "https://picsum.photos/200",
     "companyId": 1,
     "typeAnalystId": 1,
     "flgActive": true,
-    "flgChangePass": false,
-    "flgMailBox": false,
-    "changePassDate": "2024-08-15T22:24:32.423Z",
+    "flgChangePass": true,
+    "flgMailBox": true,
     "cantLog": 0,
     "flgBlocked": false,
     "rememberToken": null,
-    "createdAt": "2024-08-30T02:16:32.263Z",
-    "updatedAt": "2024-08-30T02:16:32.263Z",
     "deletedAt": null
   }
 }
@@ -134,21 +134,21 @@ ___
 ### Response Success: 200 OK
 ```json
 {
-  "analystId": 1,
-  "name": "John Doe",
-  "email": "john.doe@example.com",
+  "analystId": 11,
+  "name": "Victor Olivares",
+  "email": "victor.olivares@apuestatotal.com",
   "image": "https://picsum.photos/200",
   "companyId": 1,
   "typeAnalystId": 1,
   "flgActive": true,
-  "flgChangePass": false,
-  "flgMailBox": false,
-  "changePassDate": "2024-08-15T22:24:32.423Z",
+  "flgChangePass": true,
+  "flgMailBox": true,
+  "changePassDate": "2024-08-30T01:59:58.120Z",
   "cantLog": 0,
   "flgBlocked": false,
   "rememberToken": null,
-  "createdAt": "2024-08-30T02:16:32.263Z",
-  "updatedAt": "2024-08-30T02:16:32.263Z",
+  "createdAt": "2024-08-30T01:59:58.120Z",
+  "updatedAt": "2024-08-30T01:59:58.120Z",
   "deletedAt": null
 }
 ```
@@ -169,14 +169,14 @@ ___
 [
   {
     "analystId": 1,
-    "name": "John Doe",
-    "email": "john.doe@example.com",
+    "name": "Alexander Lopez",
+    "email": "alexander.lopez@apuestatotal.com",
     "image": "https://picsum.photos/200",
     "companyId": 1,
     "typeAnalystId": 1,
     "flgActive": true,
-    "flgChangePass": false,
-    "flgMailBox": false,
+    "flgChangePass": true,
+    "flgMailBox": true,
     "changePassDate": "2024-08-15T22:24:32.423Z",
     "cantLog": 0,
     "flgBlocked": false,
@@ -203,41 +203,39 @@ ___
 ### Request Body
 ```json
 {
-  "name": "John Smith",
-  "email": "john.smith@example.com",
-  "pass": "newpassword123",
-  "confirmPassword": "newpassword123",
+  "name": "Victor Olivares Yamunaqué",
+  "email": "victor.olivares@apuestatotal.com",
+  "pass": "password",
+  "confirmPassword": "password",
   "image": "https://picsum.photos/300",
-  "companyId": 2,
-  "typeAnalystId": 2,
-  "flgActive": false,
+  "companyId": 1,
+  "typeAnalystId": 1,
+  "flgActive": true,
   "flgChangePass": true,
   "flgMailBox": true,
-  "changePassDate": "2024-08-30T02:30:00.000Z",
-  "cantLog": 1,
-  "flgBlocked": true,
-  "rememberToken": "newtoken"
+  "cantLog": 0,
+  "flgBlocked": true
 }
 ```
 ### Response: Success: 200 OK
 ```json
 {
-  "analystId": 1,
-  "name": "John Smith",
-  "email": "john.smith@example.com",
-  "pass": "$2b$10$hashedpassword",
+  "analystId": 11,
+  "name": "Victor Olivares Yamunaqué",
+  "email": "victor.olivares@apuestatotal.com",
+  "pass": "$2b$10$QusMzg5GUyO4bzRNkH0WXOv9sG6dsHgkIk2uRzlAjBGGQqbbzgmtK",
   "image": "https://picsum.photos/300",
-  "companyId": 2,
-  "typeAnalystId": 2,
-  "flgActive": false,
+  "companyId": 1,
+  "typeAnalystId": 1,
+  "flgActive": true,
   "flgChangePass": true,
   "flgMailBox": true,
-  "changePassDate": "2024-08-30T02:30:00.000Z",
-  "cantLog": 1,
-  "flgBlocked": true,
-  "rememberToken": "newtoken",
-  "createdAt": "2024-08-30T02:16:32.263Z",
-  "updatedAt": "2024-08-30T02:30:00.000Z",
+  "changePassDate": "2024-08-30T01:59:58.120Z",
+  "cantLog": 0,
+  "flgBlocked": false,
+  "rememberToken": null,
+  "createdAt": "2024-08-30T01:59:58.120Z",
+  "updatedAt": "2024-08-30T04:30:06.776Z",
   "deletedAt": null
 }
 ```
@@ -253,12 +251,13 @@ ___
 - **Method**: `DELETE`
 - **Description**: Deletes an analyst by ID.
 
-### Response Success: 204 No Content
+### Response Success: 200 OK
 ```json
 {
-  "message": "Analyst deleted successfully"
+  "success": true
 }
 ```
+
 ### Error: 404 Not Found / 500 Internal Server Error
 ```json
 {
@@ -271,45 +270,28 @@ ___
 - **Method**: `POST`
 - **Description**: Restores a previously deleted analyst.
 
-### Request Body
-```json
-{
-  "name": "John Smith",
-  "email": "john.smith@example.com",
-  "pass": "newpassword123",
-  "image": "https://picsum.photos/300",
-  "companyId": 2,
-  "typeAnalystId": 2,
-  "flgActive": true,
-  "flgChangePass": true,
-  "flgMailBox": true,
-  "changePassDate": "2024-08-30T02:30:00.000Z",
-  "cantLog": 1,
-  "flgBlocked": false,
-  "rememberToken": "newtoken"
-}
-```
+
 ### Response Success: 200 OK
 ```json
 {
   "message": "Analyst restored successfully",
   "analyst": {
-    "analystId": 1,
-    "name": "John Smith",
-    "email": "john.smith@example.com",
-    "pass": "$2b$10$hashedpassword",
+    "analystId": 11,
+    "name": "Victor Olivares",
+    "email": "victor.olivares@apuestatotal.com",
+    "pass": "$2b$10$QusMzg5GUyO4bzRNkH0WXOv9sG6dsHgkIk2uRzlAjBGGQqbbzgmtK",
     "image": "https://picsum.photos/300",
-    "companyId": 2,
-    "typeAnalystId": 2,
+    "companyId": 1,
+    "typeAnalystId": 1,
     "flgActive": true,
     "flgChangePass": true,
     "flgMailBox": true,
-    "changePassDate": "2024-08-30T02:30:00.000Z",
-    "cantLog": 1,
+    "changePassDate": "2024-08-30T01:59:58.120Z",
+    "cantLog": 0,
     "flgBlocked": false,
-    "rememberToken": "newtoken",
-    "createdAt": "2024-08-30T02:16:32.263Z",
-    "updatedAt": "2024-08-30T02:30:00.000Z",
+    "rememberToken": null,
+    "createdAt": "2024-08-30T01:59:58.120Z",
+    "updatedAt": "2024-08-30T04:33:03.309Z",
     "deletedAt": null
   }
 }
@@ -317,8 +299,7 @@ ___
 ### Error: 404 Not Found / 500 Internal Server Error
 ```json
 {
-  "error": "Analyst not found",
-  "message": "Detailed error message"
+  "error": "Analyst is not deleted"
 }
 ```
 

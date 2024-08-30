@@ -1,5 +1,5 @@
 {
-  "name": "server",
+  "name": "api_total_secure",
   "version": "1.0.0",
   "description": "Total Secure",
   "main": "src/index.js",

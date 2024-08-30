@@ -96,7 +96,7 @@ const deleteAnalyst = async (req, res) => {
 
     await analyst.destroy();
 
-    res.status(204).json({ message: "Analyst deleted successfully" });
+    res.status(200).json({ success: true });
   } catch (error) {
     res.status(500).json({ error: "Error deleting analyst" });
   }
