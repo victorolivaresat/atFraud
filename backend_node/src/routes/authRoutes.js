@@ -13,9 +13,12 @@ const authRequired = require('../app/middleware/validateToken');
  * description: Auth API
  */
 // Auth
-routes.post("/auth/login", validateSchema(loginSchema), authController.Login);
-routes.post("/auth/logout", authController.Logout);
-routes.get("/profile", authRequired, authController.profile);
+routes.post("/auth/login", validateSchema(loginSchema), authController.login);
 routes.get("/auth/verify-token", authController.verifyToken);
+routes.post("/auth/logout", authController.logout);
+
+routes.get("/", (req, res) => {
+  res.json({ message: "Hello World" });
+});
 
 module.exports = routes;

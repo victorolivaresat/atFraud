@@ -1,0 +1,13 @@
+{
+  "nbrAnalista": "Juan Pérez",
+  "usuario": "jperez",
+  "pass": "strongpassword123",
+  "imagen" : "https://picsum.photos/200",
+  "idEmpresa": 1,
+  "idSupervisor": 1,
+  "idTipoAnalista": 1,
+  "flgActivo": true,
+  "flgBuzon": true,
+  "cantLog": 0,
+  "flgBloqueado": false
+}

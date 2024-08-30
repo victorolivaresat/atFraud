@@ -19,3 +19,4 @@ Aquí tienes algunos ejemplos de cómo utilizar estas convenciones:
 git commit -m "feat: add user authentication"
 git commit -m "fix: resolve issue with login button"
 git commit -m "docs: update README.md"
+```

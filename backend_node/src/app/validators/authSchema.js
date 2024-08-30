@@ -6,7 +6,7 @@ const loginSchema = zod.object({
       required_error: "Email is required",
     })
     .email({
-      message: "Invalid email",
+      message: "Invalid email address",
     }),
   password: zod
     .string({
@@ -15,7 +15,9 @@ const loginSchema = zod.object({
     .min(6, {
       message: "Password must be at least 6 characters",
     })
-    .max(255),
+    .max(255, {
+      message: "Password cannot exceed 255 characters",
+    }),
 });
 
 module.exports = { loginSchema };

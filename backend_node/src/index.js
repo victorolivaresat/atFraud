@@ -61,55 +61,6 @@ server.listen(port, () => {
   console.log(`Server listening on port ${port}!`);
 });
 
-// Process Email Service
-const emailServiceCctv = require("./app/services/emailServiceCctv");
-
 
 const req = { io };
-//emailServiceCctv.getI(req)
-//emailServiceCctv.getAndFlagUnreadMessages(req);
 
-emailServiceCctv.processEmailServer(req);
-
-/*
-const {
-
-  //connectMSSQL,
-  //closeMSSQL,
-  getPool,
-} = require('./config/database2');
-
-
-
-async function main() {
-  // Conectar a Sequelize
-  //await connectSequelize();
-  console.log('DB_USERNAME:', process.env.DB_USERNAME);
-  console.log('MSSQL_DB_SERVER:', process.env.MSSQL_DB_SERVER);
-  
-  console.log('MSSQL_DB_USER:', process.env.MSSQL_DB_USER);
-  console.log('MSSQL_DB_PASSWORD:', process.env.MSSQL_DB_PASSWORD);
-  console.log('MSSQL_DB_DATABASE:', process.env.MSSQL_DB_DATABASE);
-  //const req = { io };
-  //emailServiceCctv.processEmailServer(req);
-  // Conectar a MSSQL
-  await getPool();
-
-  // Aquí puedes realizar operaciones con ambas bases de datos
-
-  // Cerrar conexiones al finalizar
-
-  //await closeMSSQL();
-}
-main().catch(error => {
-  console.error('Error en la aplicación:', error);
-});
-
-main();
-// setInterval(async () => {
-//   const req = { io };
-//   await emailServiceCctv.processEmailServer(req);
-//   setTimeout(async () => {
-//     await emailServiceTs.processEmailServer(req);
-//   }, 60000);
-// }, 120000);*/
