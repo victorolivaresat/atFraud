@@ -20,3 +20,8 @@ git commit -m "feat: add user authentication"
 git commit -m "fix: resolve issue with login button"
 git commit -m "docs: update README.md"
 ```
+
+Comando para agregar todos los commits al changelog.
+```bash
+git log --pretty=format:"%h - %s (%an, %ar)" > CHANGELOG.md
+```
