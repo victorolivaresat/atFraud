@@ -5,24 +5,23 @@ const attachmentsDir = path.join(__dirname, '../../../src/assets/attachments');
 
 async function saveAttachmentLocally(content, filename) {
   
-
   const filePath = path.join(attachmentsDir, filename);
 
-  // Asegúrate de que el directorio existe
+  // Ensure the directory exists
   try {
       await fs.mkdir(attachmentsDir, { recursive: true });
   } catch (err) {
-      console.error("Error al crear el directorio para adjuntos", err);
+      console.error("Error creating the attachments directory", err);
       throw err;
   }
 
-  // Guarda el archivo
+  // Save the file
   try {
       await fs.writeFile(filePath, content);
-      console.log(`Archivo guardado: ${filePath}`);
+      console.log(`File saved: ${filePath}`);
       return filePath;
   } catch (err) {
-      console.error("Error al guardar el archivo adjunto", err);
+      console.error("Error saving the attachment", err);
       throw err;
   }
 }

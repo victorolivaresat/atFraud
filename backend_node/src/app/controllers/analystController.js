@@ -19,6 +19,7 @@ const createAnalyst = async (req, res) => {
       analyst
     });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: "Error creating analyst", message: error.message });
   }
 };
@@ -36,6 +37,7 @@ const getAnalyst = async (req, res) => {
 
     res.status(200).json(analyst);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: "Error retrieving analyst" });
   }
 };
@@ -49,6 +51,7 @@ const getAllAnalysts = async (req, res) => {
 
     res.status(200).json(analysts);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: "Error retrieving analysts" });
   }
 };
@@ -81,6 +84,7 @@ const updateAnalyst = async (req, res) => {
 
     res.status(200).json(analyst);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: "Error updating analyst" });
   }
 };
@@ -98,6 +102,7 @@ const deleteAnalyst = async (req, res) => {
 
     res.status(200).json({ success: true });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: "Error deleting analyst" });
   }
 };
@@ -126,6 +131,7 @@ const restoreAnalyst = async (req, res) => {
       analyst
     });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: "Error restoring analyst" });
   }
 };

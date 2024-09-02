@@ -44,6 +44,7 @@ const logout = async (req, res) => {
     res.clearCookie("token");
     res.status(200).json({ message: "Logged out successfully" });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: "Error during logout" });
   }
 };
@@ -77,7 +78,7 @@ const verifyToken = async (req, res) => {
       });
     });
   } catch (error) {
-    console.error("Error verifying token:", error);
+    console.error(error);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };

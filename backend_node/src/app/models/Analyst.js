@@ -28,6 +28,7 @@ Analyst.init(
     email: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
     },
     pass: {
       type: DataTypes.STRING,
@@ -52,10 +53,6 @@ Analyst.init(
         model: 'TypeAnalyst',
         key: 'typeAnalystId',
       },
-    },
-    flgActive: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
     },
     flgChangePass: {
       type: DataTypes.BOOLEAN,
