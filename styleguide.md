@@ -10,6 +10,7 @@ Utilizamos las siguientes convenciones para los mensajes de commit:
 - `test`: Para añadir o modificar pruebas.
 - `remove`: Para indicar la eliminación de un archivo o una funcionalidad en el proyecto.
 - `chore` : Para cambios en la configuración del proyecto y otras tareas que no afectan el código.
+- `add` : Para agregar nuevos archivos
 
 ## Ejemplos
 
