@@ -24,5 +24,5 @@ git commit -m "docs: update README.md"
 
 Comando para agregar todos los commits al changelog.
 ```bash
-git log --pretty=format:"%h - %s (%an, %ar)" > CHANGELOG.md
+git log --pretty=format:"## %h - %s%nAuthor: %an%nDate: %ad%n%n" --date=short > CHANGELOG.md
 ```
