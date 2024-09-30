@@ -1,6 +1,6 @@
-const analystController = require('../app/controllers/analystController');
+const userController = require('../app/controllers/userController');
 const { validateSchema } = require('../app/middleware/validateSchema');
-const { createAnalystSchema, updateAnalystSchema } = require('../app/validators/analystSchema');
+const { createUserSchema, updateUserSchema } = require('../app/validators/userSchema');
 const authRequired = require('../app/middleware/validateToken');
 const express = require('express');
 const routes = express.Router();
@@ -8,16 +8,15 @@ const routes = express.Router();
 /**
  * @swagger
  * tags:
- *   name: Analyst
- *   description: Analyst API
+ *   name: User
+ *   description: User API
  */
 
-routes.post("/analyst", validateSchema(createAnalystSchema), authRequired, analystController.createAnalyst);
-routes.put("/analyst/:id", validateSchema(updateAnalystSchema), authRequired, analystController.updateAnalyst);
-routes.post("/analyst/:id/restore", authRequired, analystController.restoreAnalyst);
-routes.delete("/analyst/:id", authRequired, analystController.deleteAnalyst);
-routes.get("/analyst/:id", authRequired, analystController.getAnalyst);
-routes.get("/analyst", authRequired, analystController.getAllAnalysts);
-
+routes.post("/user", validateSchema(createUserSchema), authRequired, userController.createUser);
+routes.put("/user/:id", validateSchema(updateUserSchema), authRequired, userController.updateUser);
+routes.post("/user/:id/restore", authRequired, userController.restoreUser);
+routes.delete("/user/:id", authRequired, userController.deleteUser);
+routes.get("/user/:id", authRequired, userController.getUser);
+routes.get("/user", authRequired, userController.getAllUsers);
 
 module.exports = routes;

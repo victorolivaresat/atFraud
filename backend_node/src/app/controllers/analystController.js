@@ -28,7 +28,7 @@ const createAnalyst = async (req, res) => {
 const getAnalyst = async (req, res) => {
   try {
     const analyst = await Analyst.findByPk(req.params.id, {
-      attributes: { exclude: ["pass"] }, // Excluye la contraseña de la respuesta
+      attributes: { exclude: ["pass"] },
     });
 
     if (!analyst) {
@@ -46,7 +46,7 @@ const getAnalyst = async (req, res) => {
 const getAllAnalysts = async (req, res) => {
   try {
     const analysts = await Analyst.findAll({
-      attributes: { exclude: ["pass"] }, // Excluye las contraseñas de la respuesta
+      attributes: { exclude: ["pass"] },
     });
 
     res.status(200).json(analysts);
