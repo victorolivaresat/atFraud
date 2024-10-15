@@ -1,6 +1,6 @@
-const userController = require('../app/controllers/userController');
+const analystCoontroller = require('../app/controllers/analystController');
 const { validateSchema } = require('../app/middleware/validateSchema');
-const { createUserSchema, updateUserSchema } = require('../app/validators/userSchema');
+const { createAnalystSchema, updateAnalystSchema } = require('../app/validators/analystSchema');
 const authRequired = require('../app/middleware/validateToken');
 const express = require('express');
 const routes = express.Router();
@@ -12,11 +12,11 @@ const routes = express.Router();
  *   description: User API
  */
 
-routes.post("/user", validateSchema(createUserSchema), authRequired, userController.createUser);
-routes.put("/user/:id", validateSchema(updateUserSchema), authRequired, userController.updateUser);
-routes.post("/user/:id/restore", authRequired, userController.restoreUser);
-routes.delete("/user/:id", authRequired, userController.deleteUser);
-routes.get("/user/:id", authRequired, userController.getUser);
-routes.get("/user", authRequired, userController.getAllUsers);
+// routes.post("/user", validateSchema(createAnalystSchema), authRequired, analystCoontroller.createUser);
+// routes.put("/user/:id", validateSchema(updateAnalystSchema), authRequired, analystCoontroller.updateUser);
+// routes.post("/user/:id/restore", authRequired, analystCoontroller.restoreUser);
+// routes.delete("/user/:id", authRequired, analystCoontroller.deleteUser);
+// routes.get("/user/:id", authRequired, analystCoontroller.getUser);
+// routes.get("/user", authRequired, analystCoontroller.getAllUsers);
 
 module.exports = routes;
