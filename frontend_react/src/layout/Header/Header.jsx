@@ -1,23 +1,11 @@
-
-// Icons
 import { RiSearch2Line } from "react-icons/ri";
-
+import PropTypes from "prop-types";
 
 const Header = () => {
-
-
-const suma = (a, b) => {
-  return a + b
-}
-
-suma(1, 2)
-
-
-
   return (
     <header className="flex flex-col md:flex-row items-center justify-between gap-4">
       <h1 className="text-2xl md:text-3xl font-bold">
-        🌞 Good morning, <span className="text-primary-100">Jorge</span>
+         Good morning, <span className="text-primary-100">Jorge</span>
       </h1>
       <form className="w-full md:w-auto">
         <div className="relative">
@@ -31,6 +19,10 @@ suma(1, 2)
       </form>
     </header>
   );
+};
+
+Header.propTypes = {
+  show: PropTypes.func.isRequired,
 };
 
 export default Header;
