@@ -1,5 +1,5 @@
-import Header from "./components/Header";
-import Sidebar from "./components/Sidebar";
+import Header from "./layout/Header/Header";
+import Sidebar from "./layout/Sidebar/Sidebar";
 // Icons
 import { RiLineChartLine, RiHashtag } from "react-icons/ri";
 
