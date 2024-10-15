@@ -1,11 +1,16 @@
 import { RiSearch2Line } from "react-icons/ri";
-import PropTypes from "prop-types";
+import { useAuth } from "../../contexts/AuthContext";
 
 const Header = () => {
+  const { currentUser, logoutUser } = useAuth();
+
   return (
     <header className="flex flex-col md:flex-row items-center justify-between gap-4">
       <h1 className="text-2xl md:text-3xl font-bold">
-         Good morning, <span className="text-primary-100">Jorge</span>
+        Good morning,{" "}
+        <span className="text-primary-100">
+          {currentUser ? currentUser.name : "Guest"}
+        </span>
       </h1>
       <form className="w-full md:w-auto">
         <div className="relative">
@@ -17,12 +22,16 @@ const Header = () => {
           />
         </div>
       </form>
+      {currentUser && (
+        <button
+          onClick={logoutUser}
+          className="bg-red-500 text-white py-2 px-4 rounded-xl hover:bg-red-600 transition-colors"
+        >
+          Logout
+        </button>
+      )}
     </header>
   );
-};
-
-Header.propTypes = {
-  show: PropTypes.func.isRequired,
 };
 
 export default Header;

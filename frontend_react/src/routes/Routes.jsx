@@ -4,6 +4,7 @@ import NotFound from "../pages/NotFound/NotFound";
 import ProtectedRoute from "./ProtectedRoute";
 import Login from "../pages/Login/Login";
 import Home from "../pages/Home/Home";
+import Test from "../pages/Test/Test";
 
 const AppRoutes = () => (
   <Routes>
@@ -21,6 +22,15 @@ const AppRoutes = () => (
         element={
           <RouteTransition>
             <Home />
+          </RouteTransition>
+        }
+      />
+
+      <Route
+        path="/test"
+        element={
+          <RouteTransition>
+            <Test />
           </RouteTransition>
         }
       />
