@@ -1,20 +1,26 @@
 # API Documentation: http://localhost:5000/api/v1/
-___
+
+---
 
 # ⚡ _Authentication_
+
 ## Login
+
 - **Endpoint**: `/auth/login`
 - **Method**: `POST`
 - **Description**: Authenticates a user and returns a JWT token.
 
 #### Request Body
+
 ```json
 {
   "email": "victor.olivares@apuestatotal.com",
   "password": "password"
 }
 ```
+
 #### Response: Success: 200 OK
+
 ```json
 {
   "success": true,
@@ -24,7 +30,9 @@ ___
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ..."
 }
 ```
+
 #### Error: 400 Bad Request / 404 Not Found / 500 Internal Server Error
+
 ```json
 {
   "message": "Invalid credentials"
@@ -32,17 +40,21 @@ ___
 ```
 
 ## Logout
+
 - **Endpoint**: `/auth/logout`
 - **Method**: `POST`
 - **Description**: Logs out the user by clearing the JWT token from cookies.
 
 ### Response Success: 200 OK
+
 ```json
 {
   "message": "Logged out successfully"
 }
 ```
+
 ### Error: 500 Internal Server Error
+
 ```json
 {
   "error": "Error during logout"
@@ -50,11 +62,13 @@ ___
 ```
 
 ## Verify Token
+
 - **Endpoint**: `/auth/verify-token`
-- **Method**:  `GET`
+- **Method**: `GET`
 - **Description**: Verifies the JWT token and returns user information.
 
 ### Response Success: 200 OK
+
 ```json
 {
   "userId": 11,
@@ -64,7 +78,9 @@ ___
   "success": true
 }
 ```
+
 ### Error: 401 Unauthorized / 500 Internal Server Error
+
 ```json
 {
   "error": "Unauthorized"
@@ -72,12 +88,15 @@ ___
 ```
 
 # ⚡ _Analyst_
+
 ## Create Analyst
+
 - **Endpoint**: `/analyst`
 - **Method**: `POST`
 - **Description**: Creates a new analyst.
 
 ### Request Body
+
 ```json
 {
   "name": "Jenson Paico",
@@ -93,7 +112,9 @@ ___
   "flgBlocked": false
 }
 ```
+
 ### Response Success: 201 Created
+
 ```json
 {
   "message": "Analyst created successfully",
@@ -118,7 +139,9 @@ ___
   }
 }
 ```
+
 ### Error: 500 Internal Server Error
+
 ```json
 {
   "error": "Error creating analyst",
@@ -127,11 +150,13 @@ ___
 ```
 
 ## Get Analyst
+
 - **Endpoint**: `/analyst/:id`
 - **Method**: `GET`
 - **Description**: Retrieves an analyst by ID.
 
 ### Response Success: 200 OK
+
 ```json
 {
   "analystId": 11,
@@ -152,7 +177,9 @@ ___
   "deletedAt": null
 }
 ```
+
 ### Error: 404 Not Found / 500 Internal Server Error
+
 ```json
 {
   "error": "Analyst not found"
@@ -160,11 +187,13 @@ ___
 ```
 
 ## Get All Analysts
+
 - **Endpoint**: `/analyst`
 - **Method**: `GET`
 - **Description**: Retrieves all analysts.
 
 ### Response Success: 200 OK
+
 ```json
 [
   {
@@ -184,11 +213,13 @@ ___
     "createdAt": "2024-08-30T02:16:32.263Z",
     "updatedAt": "2024-08-30T02:16:32.263Z",
     "deletedAt": null
-  },
+  }
   // More analysts...
 ]
 ```
+
 ### Error: 500 Internal Server Error
+
 ```json
 {
   "error": "Error retrieving analysts"
@@ -196,11 +227,13 @@ ___
 ```
 
 ## Update Analyst
+
 - **Endpoint**: `/analyst/:id`
 - **Method**: `PUT`
 - **Description**: Updates an existing analyst.
 
 ### Request Body
+
 ```json
 {
   "name": "Victor Olivares Yamunaqué",
@@ -217,7 +250,9 @@ ___
   "flgBlocked": true
 }
 ```
+
 ### Response: Success: 200 OK
+
 ```json
 {
   "analystId": 11,
@@ -239,7 +274,9 @@ ___
   "deletedAt": null
 }
 ```
+
 ### Error: 400 Bad Request / 404 Not Found / 500 Internal Server Error
+
 ```json
 {
   "error": "Passwords do not match"
@@ -247,11 +284,13 @@ ___
 ```
 
 ## Delete Analyst
+
 - **Endpoint**: `/analyst/:id`
 - **Method**: `DELETE`
 - **Description**: Deletes an analyst by ID.
 
 ### Response Success: 200 OK
+
 ```json
 {
   "success": true
@@ -259,6 +298,7 @@ ___
 ```
 
 ### Error: 404 Not Found / 500 Internal Server Error
+
 ```json
 {
   "error": "Analyst not found"
@@ -266,12 +306,13 @@ ___
 ```
 
 ## Restore Analyst
+
 - **Endpoint**: `/analyst/:id/restore`
 - **Method**: `POST`
 - **Description**: Restores a previously deleted analyst.
 
-
 ### Response Success: 200 OK
+
 ```json
 {
   "message": "Analyst restored successfully",
@@ -296,10 +337,121 @@ ___
   }
 }
 ```
+
 ### Error: 404 Not Found / 500 Internal Server Error
+
 ```json
 {
   "error": "Analyst is not deleted"
 }
 ```
 
+# ⚡ _Case_
+
+## Get Case by ID
+
+- **Endpoint**: `/cases/:caseId`
+- **Method**: `GET`
+- **Description**: Retrieves a case by ID.
+
+### Response Success: 200 OK
+
+```json
+{
+  "caseId": 1,
+  "clientId": 2,
+  "externalId": "123456",
+  "documentType": "DNI",
+  "documentNumber": "12345678",
+  "lastName": "Doe",
+  "firstName": "John",
+  "flgActive": true,
+  "typeClientId": 1,
+  "typeClientName": "Regular",
+  "numCase": "CASE123",
+  "flgConcentrator": false,
+  "flgMasive": false,
+  "companyId": 1,
+  "companyName": "Company A",
+  "flgRecentUpload": true,
+  "fecGeneration": "2024-08-30T04:24:06.343Z",
+  "fecStartEvaluation": "2024-08-30T04:24:06.343Z",
+  "fecEndEvalution": "2024-08-30T04:24:06.343Z",
+  "analystId": 1,
+  "analystName": "Victor Olivares",
+  "emailAnalyst": "victor.olivares@apuestatotal.com",
+  "flgMasiveClosed": false,
+  "flgEvaluated": true,
+  "statusId": 3,
+  "statusName": "Evaluated",
+  "commentAnalyst": "No issues found",
+  "fecUpdate": "2024-08-30T04:24:06.343Z",
+  "amount": 1000,
+  "fraudMotiveId": 1,
+  "motiveFraudName": "None"
+}
+```
+
+### Error: 404 Not Found / 500 Internal Server Error
+
+```json
+{
+  "error": "Case not found"
+}
+```
+
+### Get Cases in Evaluation by Analyst ID
+
+- **Endpoint**: /cases/evaluation/:analystId.
+- **Method**: GET
+- **Description**: Retrieves cases in evaluation by analyst ID.
+
+
+### Response Success: 200 OK
+
+```json
+[
+  {
+    "caseId": 1,
+    "clientId": 2,
+    "externalId": "123456",
+    "documentType": "DNI",
+    "documentNumber": "12345678",
+    "lastName": "Doe",
+    "firstName": "John",
+    "flgActive": true,
+    "typeClientId": 1,
+    "typeClientName": "Regular",
+    "numCase": "CASE123",
+    "flgConcentrator": false,
+    "flgMasive": false,
+    "companyId": 1,
+    "companyName": "Company A",
+    "flgRecentUpload": true,
+    "fecGeneration": "2024-08-30T04:24:06.343Z",
+    "fecStartEvaluation": "2024-08-30T04:24:06.343Z",
+    "fecEndEvalution": "2024-08-30T04:24:06.343Z",
+    "analystId": 1,
+    "analystName": "Victor Olivares",
+    "emailAnalyst": "victor.olivares@apuestatotal.com",
+    "flgMasiveClosed": false,
+    "flgEvaluated": true,
+    "statusId": 3,
+    "statusName": "Evaluated",
+    "commentAnalyst": "No issues found",
+    "fecUpdate": "2024-08-30T04:24:06.343Z",
+    "amount": 1000,
+    "fraudMotiveId": 1,
+    "motiveFraudName": "None"
+  }
+  // More cases...
+]
+```
+
+### Error: 404 Not Found / 500 Internal Server Error
+
+```json
+{
+  "error": "No cases found for the given analyst"
+}
+```
