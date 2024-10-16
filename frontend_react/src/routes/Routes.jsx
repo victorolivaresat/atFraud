@@ -4,6 +4,7 @@ import NotFound from "../pages/NotFound/NotFound";
 import ProtectedRoute from "./ProtectedRoute";
 import Login from "../pages/Login/Login";
 import Home from "../pages/Home/Home";
+import Evaluacion from "../pages/Evaluacion/Evaluacion";
 import Test from "../pages/Test/Test";
 
 const AppRoutes = () => (
@@ -18,10 +19,18 @@ const AppRoutes = () => (
     />
     <Route element={<ProtectedRoute />}>
       <Route
-        path="/"
+        path="/inicio"
         element={
           <RouteTransition>
             <Home />
+          </RouteTransition>
+        }
+      />
+      <Route
+        path="/evaluacion"
+        element={
+          <RouteTransition>
+            <Evaluacion />
           </RouteTransition>
         }
       />
