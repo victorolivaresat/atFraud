@@ -1,8 +1,12 @@
 const routes = require('express').Router();
-const authRoutes = require('./authRoutes');
 const analystRoute = require('./analystRoute');
+const authRoutes = require('./authRoutes');
+const caseRoute = require('./caseRoute');
 
-routes.use(authRoutes);
+
 routes.use(analystRoute);
+routes.use(authRoutes);
+routes.use(caseRoute)
 
 module.exports = routes;
+

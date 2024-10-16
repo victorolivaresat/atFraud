@@ -1,3 +1,78 @@
+## 1a352c9 - docs: Readme
+Author: Victor Olivares
+Date: 2024-10-15
+
+
+## 8f9bfaa - Update test
+Author: Victor Olivares
+Date: 2024-10-15
+
+
+## 5cdcdd3 - add Logout
+Author: Victor Olivares
+Date: 2024-10-15
+
+
+## 5240a7f - add: Login Page
+Author: Victor Olivares
+Date: 2024-10-15
+
+
+## 6485013 - Update 151020241140
+Author: Victor Olivares
+Date: 2024-10-15
+
+
+## eb8dd01 - Update 151020241034 - Victor
+Author: Victor Olivares
+Date: 2024-10-15
+
+
+## dc201c9 - Merge branch 'main' of https://github.com/victorolivaresat/atFraud
+Author: Victor Olivares
+Date: 2024-10-15
+
+
+## ac92353 - Update 15102024
+Author: Victor Olivares
+Date: 2024-10-15
+
+
+## 2835be8 - Update frontend
+Author: angelodiaz-bi
+Date: 2024-10-15
+
+
+## dd72c7a - Update 14102024
+Author: Victor Olivares
+Date: 2024-10-14
+
+
+## 53a3f37 - add .net
+Author: Victor Olivares
+Date: 2024-10-14
+
+
+## 324956a - add .net
+Author: Victor Olivares
+Date: 2024-10-14
+
+
+## 87655c9 - add: backend .net
+Author: Victor Olivares
+Date: 2024-10-14
+
+
+## 9796766 - add: React an Tailwind Project - Front
+Author: Victor Olivares
+Date: 2024-09-30
+
+
+## 5362490 - docs: Se actualizó el changelog.
+Author: Victor Olivares
+Date: 2024-09-05
+
+
 ## 9f069ea - Merge pull request #3 from angelodiaz-bi/main
 Author: Victor Olivares
 Date: 2024-09-05
