@@ -10,48 +10,13 @@ import Test from "../pages/Test/Test";
 const AppRoutes = () => (
   <Routes>
     <Route
-      path="/login"
-      element={
-        <RouteTransition>
-          <Login />
-        </RouteTransition>
-      }
-    />
+      path="/login" element={<RouteTransition><Login /></RouteTransition>} />
     <Route element={<ProtectedRoute />}>
-      <Route
-        path="/inicio"
-        element={
-          <RouteTransition>
-            <Home />
-          </RouteTransition>
-        }
-      />
-      <Route
-        path="/evaluacion"
-        element={
-          <RouteTransition>
-            <Evaluacion />
-          </RouteTransition>
-        }
-      />
-
-      <Route
-        path="/test"
-        element={
-          <RouteTransition>
-            <Test />
-          </RouteTransition>
-        }
-      />
-
-      <Route
-        path="*"
-        element={
-          <RouteTransition>
-            <NotFound />
-          </RouteTransition>
-        }
-      />
+      <Route path="/" element={<RouteTransition> <Home /></RouteTransition>} />
+      <Route path="/inicio" element={<RouteTransition> <Home /></RouteTransition>} />
+      <Route path="/evaluacion/:idcaso" element={<RouteTransition><Evaluacion /></RouteTransition>} />
+      <Route path="/test" element={<RouteTransition><Test /></RouteTransition>} />
+      <Route path="*" element={<RouteTransition><NotFound /></RouteTransition>} />
     </Route>
     <Route path="*" element={<Navigate to="/login" />} />
   </Routes>
