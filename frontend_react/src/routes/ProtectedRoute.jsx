@@ -21,7 +21,7 @@ const ProtectedRoute = () => {
       {loadingPage || loading ? (
         <LoaderPage />
       ) : (
-        <>{isAuthenticated ? <Outlet /> : <Navigate to="/login" />}</>
+        <>{isAuthenticated ? <Outlet /> : <Navigate to="totalSecure/login" />}</>
       )}
     </>
   );

@@ -27,7 +27,7 @@ app.use((err, req, res, next) => {
 // Función para habilitar CORS
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "http://192.168.21.35",
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true,
     optionsSuccessStatus: 204,
@@ -41,7 +41,7 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: "http://192.168.21.35",
     methods: ["GET", "POST"],
     credentials: true,
   },

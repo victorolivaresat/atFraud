@@ -2,6 +2,7 @@
   "name": "frontend_react",
   "private": true,
   "version": "0.0.0",
+  "homepage": "http://192.168.21.35/totalSecure/",
   "type": "module",
   "scripts": {
     "dev": "vite",

@@ -1,12 +1,12 @@
 import { ToastContainer } from "react-toastify";
 import { useLocation } from "react-router-dom";
-import AppRoutes from "../routes/routes";
+import AppRoutes from "../routes/Routes";
 import Sidebar from "./sidebar/Sidebar";
 import Header from "./header/Header";
 
 const Layout = () => {
   const location = useLocation();
-  const isLoginPage = location.pathname === "/login";
+  const isLoginPage = location.pathname === "/totalSecure/login";
 
   return (
     <>

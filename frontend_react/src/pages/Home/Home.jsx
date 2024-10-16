@@ -31,7 +31,7 @@ const Home = () => {
       selector: (row) => (
         <a
           className="font-medium text-red-600 hover:underline hover:text-red-400"
-          href={`/evaluacion/${row.caseId}`}
+          href={`/totalSecure/evaluacion/${row.caseId}`}
         >
           {row.caseId}
         </a>

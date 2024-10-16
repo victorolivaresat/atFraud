@@ -10,15 +10,15 @@ import Test from "../pages/Test/Test";
 const AppRoutes = () => (
   <Routes>
     <Route
-      path="/login" element={<RouteTransition><Login /></RouteTransition>} />
+      path="/totalSecure/login" element={<RouteTransition><Login /></RouteTransition>} />
     <Route element={<ProtectedRoute />}>
-      <Route path="/" element={<RouteTransition> <Home /></RouteTransition>} />
-      <Route path="/inicio" element={<RouteTransition> <Home /></RouteTransition>} />
-      <Route path="/evaluacion/:idcaso" element={<RouteTransition><Evaluacion /></RouteTransition>} />
-      <Route path="/test" element={<RouteTransition><Test /></RouteTransition>} />
-      <Route path="*" element={<RouteTransition><NotFound /></RouteTransition>} />
+      <Route path="/totalSecure/" element={<RouteTransition> <Home /></RouteTransition>} />
+      <Route path="/totalSecure/inicio" element={<RouteTransition> <Home /></RouteTransition>} />
+      <Route path="/totalSecure/evaluacion/:idcaso" element={<RouteTransition><Evaluacion /></RouteTransition>} />
+      <Route path="/totalSecure/test" element={<RouteTransition><Test /></RouteTransition>} />
+      <Route path="/totalSecure/*" element={<RouteTransition><NotFound /></RouteTransition>} />
     </Route>
-    <Route path="*" element={<Navigate to="/login" />} />
+    <Route path="/totalSecure/*" element={<Navigate to="totalSecure/login" />} />
   </Routes>
 );
 
