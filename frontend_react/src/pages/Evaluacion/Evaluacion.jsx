@@ -1,13 +1,24 @@
 import { useParams } from "react-router-dom";
 import { getCaseById } from "../../api/caseApi";
-import { getAllStatuses } from "../../api/statusApi";
+import { getAllStatuses } from "../../api/statusApi"; // Importar la función para obtener los statuses
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Evaluacion = () => {
   let { idcaso } = useParams();
-  const [caseData, setCaseData] = useState("");
-  const [statuses, setStatuses] = useState([]);
+  const [caseData, setCaseData] = useState({
+    companyName: "",
+    analystName: "",
+    externalId: "",
+    firstName: "",
+    lastName: "",
+    fecGeneration: "",
+    fecStartEvaluation: "",
+    motiveFraudName: "",
+    statusName: "",
+    commentAnalyst: ""
+  });
+  const [statuses, setStatuses] = useState([]); // Estado para almacenar los statuses
   const navigate = useNavigate();
 
   const handleCancelClick = () => {
@@ -22,21 +33,21 @@ const Evaluacion = () => {
     setCaseData({ ...caseData, statusName: e.target.value });
   };
 
-  const fetchCaseData = async (idcaso, setCaseData) => {
-    const caseData = await getCaseById(idcaso);
-    console.log(caseData);
-    setCaseData(caseData);
+  const fetchCaseData = async (idcaso) => {
+    const data = await getCaseById(idcaso);
+    console.log(data);
+    setCaseData(data);
   };
-  
-  const fetchStatusesData = async (setStatuses) => {
-    const statusesData = await getAllStatuses();
-    console.log(statusesData);
-    setStatuses(statusesData);
+
+  const fetchStatusesData = async () => {
+    const data = await getAllStatuses();
+    console.log(data);
+    setStatuses(data);
   };
-  
+
   useEffect(() => {
-    fetchCaseData(idcaso, setCaseData);
-    fetchStatusesData(setStatuses);
+    fetchCaseData(idcaso);
+    fetchStatusesData();
   }, [idcaso]);
 
   return (
@@ -96,7 +107,7 @@ const Evaluacion = () => {
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-codCliente"
                   type="text"
-                  value={caseData.externalId}
+                  value={caseData.externalId || ""}
                   readOnly
                 />
               </div>
@@ -111,7 +122,7 @@ const Evaluacion = () => {
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-nomCliente"
                   type="text"
-                  value={caseData.firstName + " " + caseData.lastName}
+                  value={`${caseData.firstName || ""} ${caseData.lastName || ""}`}
                   readOnly
                 />
               </div>
@@ -126,7 +137,7 @@ const Evaluacion = () => {
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-fecGeneracion"
                   type="text"
-                  value={caseData.fecGeneration}
+                  value={caseData.fecGeneration || ""}
                   readOnly
                 />
               </div>
@@ -141,7 +152,7 @@ const Evaluacion = () => {
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-fecIniEval"
                   type="text"
-                  value={caseData.fecStartEvaluation}
+                  value={caseData.fecStartEvaluation || ""}
                   readOnly
                 />
               </div>
@@ -158,7 +169,7 @@ const Evaluacion = () => {
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-motivoFraude"
                   type="text"
-                  value={caseData.motiveFraudName}
+                  value={caseData.motiveFraudName || ""}
                   readOnly
                 />
               </div>
@@ -173,7 +184,7 @@ const Evaluacion = () => {
                   <select
                     className="appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     id="grid-status"
-                    value={caseData.statusName}
+                    value={caseData.statusName || ""}
                     onChange={handleStatusChange}
                   >
                     {statuses.map((status) => (
@@ -197,7 +208,7 @@ const Evaluacion = () => {
                   className="w-full text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white "
                   id="grid-ComentarioAnalista"
                   type="text"
-                  value={caseData.commentAnalyst}
+                  value={caseData.commentAnalyst || ""}
                   onChange={handleCommentChange}
                 />
               </div>
