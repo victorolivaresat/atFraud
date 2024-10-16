@@ -1,97 +1,173 @@
-const Test = () => {
+import { useParams } from "react-router-dom";
+import { getCaseById } from "../../api/caseApi";
+import { useState, useEffect } from "react";
+import { useNavigate  } from "react-router-dom";
+
+const Evaluacion = () => {
+    const { idcaso } = useParams();
+    const [caseData, setCaseData] = useState("");
+    const navigate = useNavigate();
+    const handleCancelClick = () => {
+        navigate('/inicio');  // Redirige a la página /evaluacion
+      };
+
+
+    useEffect(() => {
+        const fetchCaseData = async () => {
+            const data = await getCaseById(idcaso); //
+            console.log(data)
+            setCaseData(data);
+        };
+        fetchCaseData();
+    }, [idcaso]);
+
     return (
-        <div>
-            <h1 className="text-1xl md:text-4xl font-bold mt-10">
-                Evaluación | Caso <span className="text-primary-100">7568</span>
-            </h1>
-            <form className="w-full max-w-lg mt-10">
-                <div className="flex flex-wrap -mx-3 mb-6">
-                    <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-first-name">
-                            Empresa
-                        </label>
-                        <input
-                            className="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                            id="grid-first-name"
-                            type="text"
-                            placeholder="Selecciona la empresa"
-                        />
-                        <p className="text-red-500 text-xs italic">Please fill out this field.</p>
+        <div className="mt-5">
+            <form className="w-full "  >
+                <div className="flex flex-col  p-8 bg-white rounded-lg shadow dark:border  dark:bg-gray-800 dark:border-gray-700">
+                    {/* {<pre>{JSON.stringify(caseData, null, 2)}</pre>}  */}
+
+                    <h1 className="text-1xl md:text-4xl font-bold ">
+                        Evaluación | #Caso <span className="text-primary-100">{idcaso}</span>
+                    </h1>
+
+<div className="flex flex-wrap -mx-3 mb-6 max-w-xl mt-5">
+    <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-empresa">
+            Empresa
+        </label>
+        <input
+            className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            id="grid-empresa"
+            type="text"
+            placeholder="Selecciona la empresa"
+            value={caseData.companyName}
+        />
+    </div>
+    <div className="w-full md:w-1/2 px-3">
+        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-Analista">
+            Analista
+        </label>
+        <input
+            className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            id="grid-Analista"
+            type="text"
+            placeholder="Analista"
+            autoComplete="false"
+            value={caseData.analystName}
+        />
+    </div>
+</div>
+                    <div className="flex flex-wrap -mx-3 mb-6">
+                        <div className="w-full md:w-1/5 px-3">
+                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-codCliente">
+                                Codigo Cliente
+                            </label>
+                            <input
+                                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                id="grid-codCliente"
+                                type="text"
+                                value={caseData.externalId}
+                            />
+                            
+                        </div>
+                        <div className="w-full md:w-1/5 px-3">
+                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-nomCliente">
+                                Nombre Cliente
+                            </label>
+                            <input
+                                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                id="grid-nomCliente"
+                                type="text"
+                                value={caseData.firstName + " " + caseData.lastName}
+                            />
+                            
+                        </div>
+                        <div className="w-full md:w-1/5 px-3">
+                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-fecGeneracion">
+                                Fecha Generacion
+                            </label>
+                            <input
+                                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                id="grid-fecGeneracion"
+                                type="text"
+                                value={caseData.fecGeneration}
+                            />
+                            
+                        </div>
+                        <div className="w-full md:w-1/5 px-3">
+                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-fecIniEval">
+                                Fecha Ini Evaluacion
+                            </label>
+                            <input
+                                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                id="grid-fecIniEval"
+                                type="text"
+                                value={caseData.fecStartEvaluation}
+                            />
+                            
+                        </div>
                     </div>
-                    <div className="w-full md:w-1/2 px-3">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-last-name">
-                            Analista
-                        </label>
-                        <input
-                            className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                            id="grid-last-name"
-                            type="text"
-                            placeholder="Analista"
-                        />
-                    </div>
-                </div>
-                <div className="flex flex-wrap -mx-3 mb-6">
-                    <div className="w-full px-3">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-password">
-                            Password
-                        </label>
-                        <input
-                            className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                            id="grid-password"
-                            type="password"
-                            placeholder="******************"
-                        />
-                        <p className="text-gray-600 text-xs italic">Make it as long and as crazy as youd like</p>
-                    </div>
-                </div>
-                <div className="flex flex-wrap -mx-3 mb-2">
-                    <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-city">
-                            City
-                        </label>
-                        <input
-                            className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                            id="grid-city"
-                            type="text"
-                            placeholder="Albuquerque"
-                        />
-                    </div>
-                    <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-state">
-                            State
-                        </label>
-                        <div className="relative">
-                            <select
-                                className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                id="grid-state"
-                            >
-                                <option>New Mexico</option>
-                                <option>Missouri</option>
-                                <option>Texas</option>
-                            </select>
-                            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                                </svg>
+                    <div className="flex flex-wrap -mx-3 mb-2">
+                        <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-motivoFraude">
+                                Motivo de Fraude
+                            </label>
+                            <input
+                                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                id="grid-motivoFraude"
+                                type="text"
+                                value={caseData.motiveFraudName}
+                            />
+                        </div>
+                        <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-status">
+                                Status
+                            </label>
+                            <div className="relative">
+                                <select
+                                    className=" appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                    id="grid-status"
+                                >
+                                    <option>{caseData.statusName}</option>
+                                    <option>Missouri</option>
+                                    <option>Texas</option>
+                                </select>
                             </div>
                         </div>
                     </div>
-                    <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-zip">
-                            Zip
-                        </label>
-                        <input
-                            className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                            id="grid-zip"
-                            type="text"
-                            placeholder="90210"
-                        />
+                    <div className="flex flex-wrap -mx-3 mb-2">
+                        <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                            <label className=" uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-ComentarioAnalista">
+                                Comentario Analista
+                            </label>
+                            <textarea
+                                className="w-full text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white "
+                                id="grid-ComentarioAnalista"
+                                type="text"
+                                value={caseData.commentAnalyst}
+                            />
+                        </div>
                     </div>
-                </div>
-            </form>
 
+                    <div className="flex flex-wrap -mx-3 mb-2">
+                        <button type="submit" className="w-full md:w-1/6 mt-5 text-white bg-green-400 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                            Guardar
+                        </button>
+                        <button onClick={handleCancelClick} className="w-full ml-4 md:w-1/6 mt-5 text-white bg-blue-400 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                            Cancelar
+                        </button>
+                    </div>
+
+                </div>
+                <div className="flex flex-col w-full p-8 bg-white rounded-lg shadow dark:border  dark:bg-gray-800 dark:border-gray-700">
+
+
+                </div>
+
+            </form>
         </div>
     );
 };
 
-export default Test;
+export default Evaluacion;

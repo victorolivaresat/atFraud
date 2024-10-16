@@ -1,10 +1,75 @@
 import { RiFileTextFill,RiAlarmWarningFill } from "react-icons/ri";
-import 'flowbite';
+import { MdApps } from "react-icons/md";
+import {getCasesInEvaluation } from "../../api/caseApi"
+import { useState,useEffect } from "react";
+import DataTableBase from "../../utils/DataTable";
+
 
 const Home = () => {
+  const [caseData, setCaseData] = useState("");
+
+
+  useEffect(() => {
+    const fetchCaseData = async () => {
+      const data = await getCasesInEvaluation(1); //
+      console.log(data) 
+      setCaseData(data);
+    };
+    fetchCaseData();
+  }, []);
+
+  const columns = [
+    {
+      cell: () => <MdApps style={{ fill: "#43a047" }} />,
+      width: "50px",
+      style: {
+        marginBottom: "-1px",
+      },
+    },
+    {
+      name: "IDCASO",
+      selector: (row) => <a className="font-medium text-red-600 hover:underline hover:text-red-400" href={`/evaluacion/${row.caseId}`}>{row.caseId}</a>      ,
+      sortable: true,
+    },
+    {
+      name: "CodCliente",
+      selector: (row) => row.externalId      ,
+      sortable: true,
+    },
+    {
+      name: "NomCliente",
+      selector: (row) => row.firstName + " " + row.lastName      ,
+      sortable: true,
+    },
+    {
+      name: "Dias",
+      selector: (row) => row.firstName      ,
+      sortable: true,
+    },
+    {
+      name: "FechaRegistro",
+      selector: (row) => row.fecGeneration      ,
+      sortable: true,
+    },
+    {
+      name: "Monto",
+      selector: (row) => `S/. ${row.amount}`      ,
+      sortable: true,
+    },
+  ];
+  
+  
+
+
   return (
     
     <div>
+      {/*
+      <div>
+        <h1>Case Data</h1>        
+        {caseData && <pre>{JSON.stringify(caseData, null, 2)}</pre>} 
+      </div>
+      */}
       {/* Section 1 */}
       <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 mt-10 gap-8">
         {/* Card 1 */}
@@ -28,89 +93,12 @@ const Home = () => {
 <div className="relative overflow-x-auto rounded-xl">
     
 <div className="overflow-x-auto relative shadow-md sm:rounded-lg">
-  <table id="search-table" className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-      <tr>
-        <th scope="col" className="px-2 py-1">
-          <span className="flex items-center"></span>
-        </th>
-        <th scope="col" className="px-1 py-3">
-          <span className="flex items-center">IDCASO</span>
-        </th>
-        <th scope="col" className="px-6 py-3">
-          <span className="flex items-center">Codigo Cliente</span>
-        </th>
-        <th scope="col" className="px-6 py-3">
-          <span className="flex items-center">Nombre Cliente</span>
-        </th>
-        <th scope="col" className="px-6 py-3">
-          <span className="flex items-center">Dias</span>
-        </th>
-        <th scope="col" className="px-6 py-3">
-          <span className="flex items-center">Fecha Registro</span>
-        </th>
-        <th scope="col" className="px-6 py-3">
-          <span className="flex items-center">Control</span>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-        <td className="px-6 py-4"><input id="default-checkbox" type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/></td>
-        <td className="px-1 py-4"><a className="font-medium text-red-600 hover:underline hover:text-red-400" href="/evaluacion">1234</a></td>
-        <td className="px-6 py-4">1001482860</td>
-        <td className="px-6 py-4">Bernardino Elmer</td>
-        <td className="px-6 py-4">2</td>
-        <td className="px-6 py-4">2024-02-14 15:00</td>
-        <td className="px-6 py-4">Concentracion IP - Registros</td>
-      </tr>
-      <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-      <td className="px-6 py-4"><input id="default-checkbox" type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/></td>
-        <td className="px-1 py-4"><a className="font-medium text-red-600 hover:underline hover:text-red-400" href="/evaluacion">7568</a></td>
-        <td className="px-6 py-4">1001482862</td>
-        <td className="px-6 py-4">Pedro Alexis</td>
-        <td className="px-6 py-4">4</td>
-        <td className="px-6 py-4">2024-02-14 15:03</td>
-        <td className="px-6 py-4">DNI Correlativos</td>
-      </tr>
-      <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-      <td className="px-6 py-4"><input id="default-checkbox" type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/></td>
-        <td className="px-1 py-4"><a className="font-medium text-red-600 hover:underline hover:text-red-400" href="/evaluacion">6845</a></td>
-        <td className="px-6 py-4">1001482863</td>
-        <td className="px-6 py-4">Ysabel</td>
-        <td className="px-6 py-4">72</td>
-        <td className="px-6 py-4">2024-02-14 15:04</td>
-        <td className="px-6 py-4">Concentracion IP - Registros</td>
-      </tr>
-      <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-      <td className="px-6 py-4"><input id="default-checkbox" type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/></td>
-        <td className="px-1 py-4"><a className="font-medium text-red-600 hover:underline hover:text-red-400" href="/evaluacion">1245</a></td>
-        <td className="px-6 py-4">1001482864</td>
-        <td className="px-6 py-4">Marco Antonio</td>
-        <td className="px-6 py-4">1</td>
-        <td className="px-6 py-4">2021-04-15 03:58</td>
-        <td className="px-6 py-4">DNI Correlativos</td>
-      </tr>
-      <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-      <td className="px-6 py-4"><input id="default-checkbox" type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/></td>
-        <td className="px-1 py-4"><a className="font-medium text-red-600 hover:underline hover:text-red-400" href="/evaluacion">6987</a></td>
-        <td className="px-6 py-4">1001482865</td>
-        <td className="px-6 py-4">Jeniffer Sibel</td>
-        <td className="px-6 py-4">8</td>
-        <td className="px-6 py-4">2021-03-31 00:23</td>
-        <td className="px-6 py-4">Concentracion IP - Login Error</td>
-      </tr>
-      <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-        <td className="px-6 py-4"><input id="default-checkbox" type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/></td>
-        <td className="px-1 py-4"><a className="font-medium text-red-600 hover:underline hover:text-red-400" href="/evaluacion">4567</a></td>
-        <td className="px-6 py-4">1001482866</td>
-        <td className="px-6 py-4">Lida Emelda</td>
-        <td className="px-6 py-4">11</td>
-        <td className="px-6 py-4">2023-08-21 23:45</td>
-        <td className="px-6 py-4">DNI Correlativos</td>
-      </tr>
-    </tbody>
-  </table>
+  <DataTableBase
+  columns={columns}
+  data={caseData}
+  paginationPerPage={10}
+  />
+  
 </div>
 
 
