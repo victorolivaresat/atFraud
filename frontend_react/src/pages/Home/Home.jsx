@@ -6,12 +6,13 @@ import { useState, useEffect } from "react";
 import { MdApps } from "react-icons/md";
 
 const Home = () => {
+  const urlBase = import.meta.env.VITE_URL_BASE;
   const [caseData, setCaseData] = useState("");
   const { currentUser } = useAuth();
 
   useEffect(() => {
     const fetchCaseData = async () => {
-      const data = await getCasesInEvaluation(currentUser.userId); //
+      const data = await getCasesInEvaluation(currentUser.userId); 
       console.log(data);
       setCaseData(data);
     };
@@ -27,11 +28,11 @@ const Home = () => {
       },
     },
     {
-      name: "IDCASO",
+      name: "ID CASO",
       selector: (row) => (
         <a
           className="font-medium text-red-600 hover:underline hover:text-red-400"
-          href={`/totalSecure/evaluacion/${row.caseId}`}
+          href={ urlBase + 'evaluation/' + row.caseId}	
         >
           {row.caseId}
         </a>
@@ -39,12 +40,12 @@ const Home = () => {
       sortable: true,
     },
     {
-      name: "CodCliente",
+      name: "Cod. Cliente",
       selector: (row) => row.externalId,
       sortable: true,
     },
     {
-      name: "NomCliente",
+      name: "Nom. Cliente",
       selector: (row) => row.firstName + " " + row.lastName,
       sortable: true,
     },
@@ -54,7 +55,7 @@ const Home = () => {
       sortable: true,
     },
     {
-      name: "FechaRegistro",
+      name: "Fecha Registro",
       selector: (row) => row.fecGeneration,
       sortable: true,
     },

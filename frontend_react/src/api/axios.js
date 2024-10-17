@@ -1,7 +1,9 @@
 import axios from "axios";
 
+const urlBackend = import.meta.env.VITE_URL_BACKEND;
+
 const instance = axios.create({  
-  baseURL: "http://192.168.21.35:5000/api/v1",
+  baseURL: urlBackend,
   withCredentials: true,
 });
 

@@ -1,11 +1,12 @@
 import { useParams } from "react-router-dom";
 import { getCaseById } from "../../api/caseApi";
-import { getAllStatuses } from "../../api/statusApi"; // Importar la función para obtener los statuses
+import { getAllStatuses } from "../../api/statusApi";
+import { getAllFraudMotives } from "../../api/fraudMotiveApi";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Evaluacion = () => {
-  let { idcaso } = useParams();
+const Evaluation = () => {
+  let { idCase } = useParams();
   const [caseData, setCaseData] = useState({
     companyName: "",
     analystName: "",
@@ -16,13 +17,17 @@ const Evaluacion = () => {
     fecStartEvaluation: "",
     motiveFraudName: "",
     statusName: "",
-    commentAnalyst: ""
+    commentAnalyst: "",
+    amount: "",
   });
-  const [statuses, setStatuses] = useState([]); // Estado para almacenar los statuses
+  const [statuses, setStatuses] = useState([]);
+  const [fraudMotives, setFraudMotives] = useState([]);
   const navigate = useNavigate();
 
+  const urlBase = import.meta.env.VITE_URL_BASE;
+
   const handleCancelClick = () => {
-    navigate("totalSecure/inicio");
+    navigate(`${urlBase}home`);
   };
 
   const handleCommentChange = (e) => {
@@ -31,6 +36,10 @@ const Evaluacion = () => {
 
   const handleStatusChange = (e) => {
     setCaseData({ ...caseData, statusName: e.target.value });
+  };
+
+  const handleAmountChange = (e) => {
+    setCaseData({ ...caseData, amount: e.target.value });
   };
 
   const fetchCaseData = async (idcaso) => {
@@ -45,25 +54,32 @@ const Evaluacion = () => {
     setStatuses(data);
   };
 
+  const fetchFraudMotivesData = async () => {
+    const data = await getAllFraudMotives();
+    console.log(data);
+    setFraudMotives(data);
+  };
+
   useEffect(() => {
-    fetchCaseData(idcaso);
+    fetchCaseData(idCase);
     fetchStatusesData();
-  }, [idcaso]);
+    fetchFraudMotivesData();
+  }, [idCase]);
 
   return (
     <div className="mt-5">
       <div className="w-full ">
         <div className="flex flex-col  p-8 bg-white rounded-lg shadow dark:border  dark:bg-gray-800 dark:border-gray-700">
-          <h1 className="text-1xl md:text-4xl font-bold ">
+          <h1 className="text-1xl md:text-4xl font-bold dark:text-gray-100">
             Evaluación | #Caso{" "}
-            <span className="text-primary-100">{idcaso}</span>
+            <span className="text-primary-100">{idCase}</span>
           </h1>
 
-          <form>
-            <div className="flex flex-wrap -mx-3 mb-6 max-w-xl mt-5">
-              <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+          <form className="my-5">
+            <div className="flex flex-wrap -mx-3 mb-6">
+              <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                 <label
-                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  className="block uppercase tracking-wide dark:text-gray-50 text-gray-700 text-xs font-bold mb-2"
                   htmlFor="grid-empresa"
                 >
                   Empresa
@@ -77,9 +93,9 @@ const Evaluacion = () => {
                   readOnly
                 />
               </div>
-              <div className="w-full md:w-1/2 px-3">
+              <div className="w-full md:w-1/3 px-3">
                 <label
-                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  className="block uppercase tracking-wide dark:text-gray-50 text-gray-700 text-xs font-bold mb-2"
                   htmlFor="grid-Analista"
                 >
                   Analista
@@ -94,62 +110,64 @@ const Evaluacion = () => {
                   readOnly
                 />
               </div>
-            </div>
-            <div className="flex flex-wrap -mx-3 mb-6">
-              <div className="w-full md:w-1/5 px-3">
+              <div className="w-full md:w-1/3 px-3">
                 <label
-                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  className="block uppercase tracking-wide dark:text-gray-50 text-gray-700 text-xs font-bold mb-2"
                   htmlFor="grid-codCliente"
                 >
                   Codigo Cliente
                 </label>
                 <input
-                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-codCliente"
                   type="text"
                   value={caseData.externalId || ""}
                   readOnly
                 />
               </div>
-              <div className="w-full md:w-1/5 px-3">
+            </div>
+            <div className="flex flex-wrap -mx-3 mb-6">
+              <div className="w-full md:w-1/3 px-3">
                 <label
-                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  className="block uppercase tracking-wide dark:text-gray-50 text-gray-700 text-xs font-bold mb-2"
                   htmlFor="grid-nomCliente"
                 >
                   Nombre Cliente
                 </label>
                 <input
-                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-nomCliente"
                   type="text"
-                  value={`${caseData.firstName || ""} ${caseData.lastName || ""}`}
+                  value={`${caseData.firstName || ""} ${
+                    caseData.lastName || ""
+                  }`}
                   readOnly
                 />
               </div>
-              <div className="w-full md:w-1/5 px-3">
+              <div className="w-full md:w-1/3 px-3">
                 <label
-                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  className="block uppercase tracking-wide dark:text-gray-50 text-gray-700 text-xs font-bold mb-2"
                   htmlFor="grid-fecGeneracion"
                 >
                   Fecha Generacion
                 </label>
                 <input
-                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-fecGeneracion"
                   type="text"
                   value={caseData.fecGeneration || ""}
                   readOnly
                 />
               </div>
-              <div className="w-full md:w-1/5 px-3">
+              <div className="w-full md:w-1/3 px-3">
                 <label
-                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  className="block uppercase tracking-wide dark:text-gray-50 text-gray-700 text-xs font-bold mb-2"
                   htmlFor="grid-fecIniEval"
                 >
                   Fecha Ini Evaluacion
                 </label>
                 <input
-                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-fecIniEval"
                   type="text"
                   value={caseData.fecStartEvaluation || ""}
@@ -157,49 +175,70 @@ const Evaluacion = () => {
                 />
               </div>
             </div>
-            <div className="flex flex-wrap -mx-3 mb-2">
-              <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+            <div className="flex flex-wrap -mx-3 mb-6">
+              <div className="w-full md:w-1/3 px-3">
                 <label
-                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  className="block uppercase tracking-wide dark:text-gray-50 text-gray-700 text-xs font-bold mb-2"
+                  htmlFor="grid-amount"
+                >
+                  Monto
+                </label>
+                <input
+                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="grid-amount"
+                  type="text"
+                  value={caseData.amount || ""}
+                  onChange={handleAmountChange}
+                />
+              </div>
+              <div className="w-full md:w-1/3 px-3">
+                <label
+                  className="block uppercase tracking-wide dark:text-gray-50 text-gray-700 text-xs font-bold mb-2"
                   htmlFor="grid-motivoFraude"
                 >
                   Motivo de Fraude
                 </label>
-                <input
-                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                <select
+                  className="appearance-none block w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-motivoFraude"
-                  type="text"
                   value={caseData.motiveFraudName || ""}
-                  readOnly
-                />
+                  onChange={handleStatusChange}
+                >
+                  {fraudMotives.map((fraudMotive) => (
+                    <option
+                      key={fraudMotive.motiveFraudId}
+                      value={fraudMotive.motiveFraudName}
+                    >
+                      {fraudMotive.motiveFraudName}
+                    </option>
+                  ))}
+                </select>
               </div>
-              <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+              <div className="w-full md:w-1/3 px-3">
                 <label
-                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  className="block uppercase tracking-wide dark:text-gray-50 text-gray-700 text-xs font-bold mb-2"
                   htmlFor="grid-status"
                 >
                   Status
                 </label>
-                <div className="relative">
-                  <select
-                    className="appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                    id="grid-status"
-                    value={caseData.statusName || ""}
-                    onChange={handleStatusChange}
-                  >
-                    {statuses.map((status) => (
-                      <option key={status.statusId} value={status.statusName}>
-                        {status.statusName}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+                <select
+                  className="appearance-none block w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="grid-status"
+                  value={caseData.statusName || ""}
+                  onChange={handleStatusChange}
+                >
+                  {statuses.map((status) => (
+                    <option key={status.statusId} value={status.statusName}>
+                      {status.statusName}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
             <div className="flex flex-wrap -mx-3 mb-2">
-              <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+              <div className="w-full px-3 mb-6 md:mb-0">
                 <label
-                  className="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  className="uppercase tracking-wide dark:text-gray-50 text-gray-700 text-xs font-bold mb-2"
                   htmlFor="grid-ComentarioAnalista"
                 >
                   Comentario Analista
@@ -229,10 +268,9 @@ const Evaluacion = () => {
             </div>
           </form>
         </div>
-        <div className="flex flex-col w-full p-8 bg-white rounded-lg shadow dark:border  dark:bg-gray-800 dark:border-gray-700"></div>
       </div>
     </div>
   );
 };
 
-export default Evaluacion;
+export default Evaluation;

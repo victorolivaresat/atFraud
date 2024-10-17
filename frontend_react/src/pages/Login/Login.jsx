@@ -15,12 +15,14 @@ const Login = () => {
     const { email, password } = data;
     await loginUser(email, password);
   };
+
+  const urlBase = import.meta.env.VITE_URL_BASE;
   
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/totalSecure/inicio");
+      navigate(`${urlBase}home`);
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, navigate, urlBase]);
   
   const [showPassword, setShowPassword] = useState(false);
   const togglePasswordVisibility = () => setShowPassword(!showPassword);

@@ -1,20 +1,20 @@
+import { useAuth } from "../contexts/AuthContext";
 import { ToastContainer } from "react-toastify";
-import { useLocation } from "react-router-dom";
 import AppRoutes from "../routes/Routes";
 import Sidebar from "./sidebar/Sidebar";
 import Header from "./header/Header";
 
 const Layout = () => {
-  const location = useLocation();
-  const isLoginPage = location.pathname === "/totalSecure/login";
+
+  const { isAuthenticated } = useAuth();
 
   return (
     <>
       <ToastContainer />
-      <div className={isLoginPage ? "" : "grid lg:grid-cols-4 xl:grid-cols-6 min-h-screen"}>
-        {!isLoginPage && <Sidebar />}
-        <main className={isLoginPage ? "w-full min-h-screen" : "lg:col-span-3 xl:col-span-5 bg-gray-100 p-8 h-[100vh] overflow-y-scroll"}>
-          {!isLoginPage && <Header />}
+      <div className={!isAuthenticated ? "" : "grid lg:grid-cols-4 xl:grid-cols-6 min-h-screen"}>
+        {isAuthenticated && <Sidebar />}
+        <main className={!isAuthenticated ? "w-full min-h-screen" : "lg:col-span-3 xl:col-span-5 bg-gray-100 p-8 h-[100vh] overflow-y-scroll"}>
+          {isAuthenticated && <Header />}
           <AppRoutes />
         </main>
       </div>

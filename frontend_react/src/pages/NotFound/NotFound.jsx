@@ -1,4 +1,3 @@
-import { FaExclamationCircle } from "react-icons/fa";
 import LoaderPage from "../../utils/LoaderPage";
 import { useState, useEffect } from "react";
 
@@ -20,14 +19,15 @@ const NotFound = () => {
       ) : (
         <div className="flex items-center justify-center h-screen">
           <div className="text-center">
-            <h1 className="text-9xl font-bold">404</h1>
+            <h1 className="text-9xl font-bold">
+              404
+            </h1>
             <p className="text-2xl">
-              <span className="text-red-600">
-                <FaExclamationCircle /> Opps!
-              </span>{" "}
-              Página no encontrada.
+              <span className="text-red-600">Opps!</span> Página no encontrada.
             </p>
-            <p className="text-lg">La página que estás buscando no existe.</p>
+            <p className="text-lg mb-5">
+              La página que estás buscando no existe.
+            </p>
             <a
               href="/"
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"

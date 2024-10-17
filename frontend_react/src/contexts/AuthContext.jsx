@@ -37,7 +37,6 @@ export const AuthProvider = ({ children }) => {
       cookie.remove("token");
       setCurrentUser(null);
       setIsAuthenticated(false);
-      window.localStorage.removeItem("theme");
       toast.success("¡Hasta pronto!");
     } catch (error) {
       console.error("Error al cerrar sesión: ", error);
