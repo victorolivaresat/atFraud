@@ -22,7 +22,7 @@ const Evaluacion = () => {
   const navigate = useNavigate();
 
   const handleCancelClick = () => {
-    navigate("/inicio");
+    navigate("totalSecure/inicio");
   };
 
   const handleCommentChange = (e) => {

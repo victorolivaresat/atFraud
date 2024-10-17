@@ -18,7 +18,7 @@ const Login = () => {
   
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/inicio");
+      navigate("/totalSecure/inicio");
     }
   }, [isAuthenticated, navigate]);
   
