@@ -1,7 +1,6 @@
 const sequelize = require("../../config/database");
 const { QueryTypes } = require("sequelize");
 
-
 const getCaseById = async (req, res) => {
   try {
     const { caseId } = req.params;
@@ -24,7 +23,6 @@ const getCaseById = async (req, res) => {
     res.status(500).json({ error: `Error fetching case: ${error.message}` });
   }
 };
-
 
 const getCasesInEvaluation = async (req, res) => {
   try {
@@ -49,7 +47,32 @@ const getCasesInEvaluation = async (req, res) => {
   }
 };
 
+const updateCaseEvaluation = async (req, res) => {
+  try {
+    const { caseId } = req.params;
+    const { newComment, newAmount, newFraudMotiveId, newStatusId } = req.body;
+
+    const result = await sequelize.query(
+      "EXEC [dbo].[sp_CaseEvalSet] @caseId = :caseId, @newComment = :newComment, @newAmount = :newAmount, @newFraudMotiveId = :newFraudMotiveId, @newStatusId = :newStatusId",
+      {
+        replacements: { caseId, newComment, newAmount, newFraudMotiveId, newStatusId },
+        type: QueryTypes.SELECT,
+      }
+    );
+
+    if (result.length > 0) {
+      res.status(200).json(result[0]);
+    } else {
+      res.status(404).json({ error: "Case not found or no changes made" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: `Error updating case evaluation: ${error.message}` });
+  }
+};
+
 module.exports = {
   getCaseById,
   getCasesInEvaluation,
+  updateCaseEvaluation,
 };

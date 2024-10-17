@@ -5,9 +5,9 @@ const Header = () => {
 
   return (
     <header className="flex flex-col md:flex-row items-center justify-between gap-4">
-      <h1 className="text-2xl md:text-3xl font-bold">
+      <h1 className="text-2xl md:text-3xl font-bold dark:text-slate-100">
         Hola! {" "}
-        <span className="text-primary-100">
+        <span className="text-primary-100 dark:text-slate-400">
           {currentUser ? currentUser.name : "Guest"}
         </span>
       </h1>

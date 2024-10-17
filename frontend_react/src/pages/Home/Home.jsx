@@ -1,23 +1,26 @@
 import { RiFileTextFill, RiAlarmWarningFill } from "react-icons/ri";
 import { getCasesInEvaluation } from "../../api/caseApi";
-import { useAuth } from "../../contexts/AuthContext";
 import DataTableBase from "../../utils/DataTable";
 import { useState, useEffect } from "react";
 import { MdApps } from "react-icons/md";
 
 const Home = () => {
   const urlBase = import.meta.env.VITE_URL_BASE;
-  const [caseData, setCaseData] = useState("");
-  const { currentUser } = useAuth();
+  const [caseData, setCaseData] = useState([]);
+  const userId = localStorage.getItem("userId");
 
   useEffect(() => {
     const fetchCaseData = async () => {
-      const data = await getCasesInEvaluation(currentUser.userId); 
-      console.log(data);
-      setCaseData(data);
+      try {
+        const data = await getCasesInEvaluation(userId);
+        console.log(data); 
+        setCaseData(data);
+      } catch (error) {
+        console.error("Error fetching case data:", error);
+      }
     };
     fetchCaseData();
-  }, [currentUser.userId]);
+  }, [userId]);
 
   const columns = [
     {
@@ -32,7 +35,7 @@ const Home = () => {
       selector: (row) => (
         <a
           className="font-medium text-red-600 hover:underline hover:text-red-400"
-          href={ urlBase + 'evaluation/' + row.caseId}	
+          href={urlBase + "evaluation/" + row.caseId}
         >
           {row.caseId}
         </a>
@@ -77,7 +80,7 @@ const Home = () => {
           <span className="text-5xl text-white">59</span>
         </div>
 
-        {/* Card 1 */}
+        {/* Card 2 */}
         <div className="bg-primary-100 p-8 rounded-xl text-gray-300 flex flex-col gap-6">
           <RiAlarmWarningFill className="text-5xl" />
           <h4 className="text-2xl">Atendidas</h4>

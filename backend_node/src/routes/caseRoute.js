@@ -11,5 +11,6 @@ const routes = express.Router();
  */
 routes.get("/cases/:caseId", authRequired, caseController.getCaseById);
 routes.get("/cases/evaluation/:analystId", authRequired, caseController.getCasesInEvaluation);
+routes.put("/cases/evaluation/:caseId", authRequired, caseController.updateCaseEvaluation); // Nueva ruta para actualizar la evaluación
 
 module.exports = routes;

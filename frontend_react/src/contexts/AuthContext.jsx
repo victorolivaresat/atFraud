@@ -12,10 +12,11 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
 
-
   const authenticateUser = (user) => {
     setCurrentUser(user);
+    console.log(user);
     setIsAuthenticated(true);
+    localStorage.setItem("userId", user.id);
   };
 
   const loginUser = async (email, password) => {
@@ -37,13 +38,13 @@ export const AuthProvider = ({ children }) => {
       cookie.remove("token");
       setCurrentUser(null);
       setIsAuthenticated(false);
+      localStorage.removeItem("userId");
       toast.success("¡Hasta pronto!");
     } catch (error) {
       console.error("Error al cerrar sesión: ", error);
       toast.error("Error al cerrar sesión. Por favor, inténtalo de nuevo.");
     }
   };
-
 
   useEffect(() => {
     async function checkLoginStatus() {
@@ -65,6 +66,7 @@ export const AuthProvider = ({ children }) => {
 
         setIsAuthenticated(true);
         setCurrentUser(res);
+        localStorage.setItem("userId", res.userId); // Guardar userId en localStorage
         setLoading(false);
 
       } catch (error) {

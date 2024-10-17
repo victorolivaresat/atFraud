@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { getCaseById } from "../../api/caseApi";
+import { getCaseById, updateCaseEvaluation } from "../../api/caseApi";
 import { getAllStatuses } from "../../api/statusApi";
 import { getAllFraudMotives } from "../../api/fraudMotiveApi";
 import { useState, useEffect } from "react";
@@ -26,7 +26,7 @@ const Evaluation = () => {
   const navigate = useNavigate();
 
   const handleCancelClick = () => {
-    navigate( urlBase + 'home');
+    navigate(urlBase + 'home');
   };
 
   const handleCommentChange = (e) => {
@@ -65,6 +65,23 @@ const Evaluation = () => {
     fetchFraudMotivesData();
   }, [idCase]);
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const updatedCase = await updateCaseEvaluation(
+        idCase,
+        caseData.commentAnalyst,
+        parseFloat(caseData.amount),
+        fraudMotives.find(motive => motive.motiveFraudName === caseData.motiveFraudName)?.motiveFraudId,
+        statuses.find(status => status.statusName === caseData.statusName)?.statusId
+      );
+      console.log("Actualización exitosa:", updatedCase);
+      navigate(urlBase + 'home');
+    } catch (error) {
+      console.error("Error actualizando la evaluación del caso:", error);
+    }
+  };
+
   return (
     <div className="mt-5">
       <div className="w-full ">
@@ -74,7 +91,7 @@ const Evaluation = () => {
             <span className="text-primary-100">{idCase}</span>
           </h1>
 
-          <form className="my-5">
+          <form className="my-5" onSubmit={handleSubmit}>
             <div className="flex flex-wrap -mx-3 mb-6">
               <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                 <label
