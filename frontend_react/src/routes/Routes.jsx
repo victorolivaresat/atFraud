@@ -14,7 +14,7 @@ const AppRoutes = () => (
     <Route path={urlBase + 'login'} element={<RouteTransition><Login /></RouteTransition>} />
     <Route element={<ProtectedRoute />}>
       <Route path={urlBase + 'home'} element={<RouteTransition><Home /></RouteTransition>} />
-      <Route path={urlBase + 'evaluation/:idcase'} element={<RouteTransition><Evaluation /></RouteTransition>} />
+      <Route path={urlBase + 'evaluation/:idCase'} element={<RouteTransition><Evaluation /></RouteTransition>} />
       <Route path={urlBase + 'test'} element={<RouteTransition><Test /></RouteTransition>} />
       <Route path={urlBase + '*'} element={<RouteTransition><NotFound /></RouteTransition>} />
     </Route>
