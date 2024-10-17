@@ -22,12 +22,11 @@ const Evaluation = () => {
   });
   const [statuses, setStatuses] = useState([]);
   const [fraudMotives, setFraudMotives] = useState([]);
+  const urlBase = import.meta.env.VITE_URL_BASE;
   const navigate = useNavigate();
 
-  const urlBase = import.meta.env.VITE_URL_BASE;
-
   const handleCancelClick = () => {
-    navigate(`${urlBase}home`);
+    navigate( urlBase + 'home');
   };
 
   const handleCommentChange = (e) => {
@@ -42,8 +41,8 @@ const Evaluation = () => {
     setCaseData({ ...caseData, amount: e.target.value });
   };
 
-  const fetchCaseData = async (idcaso) => {
-    const data = await getCaseById(idcaso);
+  const fetchCaseData = async (idCase) => {
+    const data = await getCaseById(idCase);
     console.log(data);
     setCaseData(data);
   };
