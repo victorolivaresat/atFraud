@@ -1,11 +1,13 @@
 const cookieParser = require("cookie-parser");
 const routes = require("./routes/routes");
+const config = require("../src/config");
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const path = require("path");
 const http = require("http");
 require("dotenv").config();
+
 const app = express();
 
 // Puerto de la aplicación
@@ -17,7 +19,6 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use("/public", express.static(path.join(__dirname, "../public")));
-app.use('/attachments', express.static(path.join(__dirname, '../src/assets/attachments')));
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
@@ -27,8 +28,7 @@ app.use((err, req, res, next) => {
 // Función para habilitar CORS
 app.use(
   cors({
-    origin: "http://localhost:5173",
-    // origin: "http://192.168.21.35",
+    origin: config.CORS.ORIGIN,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true,
     optionsSuccessStatus: 204,
@@ -42,8 +42,7 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173",
-    // origin: "http://192.168.21.35",
+    origin: config.CORS.ORIGIN,
     methods: ["GET", "POST"],
     credentials: true,
   },
