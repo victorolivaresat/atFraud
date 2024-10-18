@@ -1,6 +1,6 @@
 USE [totalsecureDESA]
 GO
-/****** Object:  StoredProcedure [dbo].[sp_DocumentsGet]    Script Date: 5/09/2024 00:55:13 ******/
+/****** Object:  StoredProcedure [dbo].[sp_DocumentsGet]    Script Date: 18/10/2024 10:37:28 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -17,11 +17,11 @@ ALTER PROCEDURE [dbo].[sp_DocumentsGet]
 AS
 BEGIN
 	select a.caseId,
-		a.companyId,d.companyName,
 		b.analystId,c.[name] analystName,
 		b.documentId,b.documentName,b.[path] 
 	from cases a left join documents b on a.caseId = b.caseId
 				 left join analysts c on b.analystId = c.analystId
-				 left join companies d on a.companyId = d.companyId
 	where a.caseId = @caseId
 END
+
+

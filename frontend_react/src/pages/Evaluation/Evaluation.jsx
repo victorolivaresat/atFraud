@@ -2,12 +2,12 @@ import { useParams } from "react-router-dom";
 import { getCaseById, updateCaseEvaluation } from "../../api/caseApi";
 import { getAllStatuses } from "../../api/statusApi";
 import { getAllFraudMotives } from "../../api/fraudMotiveApi";
-import { toast } from "react-toastify";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDropzone } from 'react-dropzone';
 
 const Evaluation = () => {
-  let { idCase } = useParams();
+  let { idCase } = useParams(); 
   const [caseData, setCaseData] = useState({
     companyName: "",
     analystName: "",
@@ -25,6 +25,13 @@ const Evaluation = () => {
   const [fraudMotives, setFraudMotives] = useState([]);
   const urlBase = import.meta.env.VITE_URL_BASE;
   const navigate = useNavigate();
+
+  const onDrop = useCallback(acceptedFiles => {
+    console.log(acceptedFiles);
+  }, []);
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+
 
   const handleCancelClick = () => {
     navigate(urlBase + 'home');
@@ -90,7 +97,7 @@ const Evaluation = () => {
 
   return (
     <div className="mt-5">
-      <div className="w-full">
+      <div className="w-full ">
         <div className="flex flex-col  p-8 bg-white rounded-lg shadow dark:border  dark:bg-gray-800 dark:border-gray-700">
           <h1 className="text-1xl md:text-4xl font-bold dark:text-gray-100">
             Evaluación | #Caso{" "}
@@ -224,7 +231,7 @@ const Evaluation = () => {
                   className="appearance-none block w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-motivoFraude"
                   value={caseData.motiveFraudName || ""}
-                  onChange={hanldeFraudMotiveChange}
+                  onChange={handleStatusChange}
                 >
                   {fraudMotives.map((fraudMotive) => (
                     <option
@@ -290,7 +297,7 @@ const Evaluation = () => {
             </div>
           </form>
         </div>
-      </div>
+      </form>
     </div>
   );
 };
