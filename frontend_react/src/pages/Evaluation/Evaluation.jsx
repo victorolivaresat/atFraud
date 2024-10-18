@@ -1,10 +1,10 @@
-import { useParams } from "react-router-dom";
 import { getCaseById, updateCaseEvaluation } from "../../api/caseApi";
-import { getAllStatuses } from "../../api/statusApi";
 import { getAllFraudMotives } from "../../api/fraudMotiveApi";
 import { useState, useEffect, useCallback } from "react";
+import { getAllStatuses } from "../../api/statusApi";
 import { useNavigate } from "react-router-dom";
 import { useDropzone } from "react-dropzone";
+import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const Evaluation = () => {
