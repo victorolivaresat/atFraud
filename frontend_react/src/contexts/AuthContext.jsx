@@ -39,7 +39,6 @@ export const AuthProvider = ({ children }) => {
       setCurrentUser(null);
       setIsAuthenticated(false);
       localStorage.removeItem("userId");
-      toast.success("¡Hasta pronto!");
     } catch (error) {
       console.error("Error al cerrar sesión: ", error);
       toast.error("Error al cerrar sesión. Por favor, inténtalo de nuevo.");
@@ -66,7 +65,7 @@ export const AuthProvider = ({ children }) => {
 
         setIsAuthenticated(true);
         setCurrentUser(res);
-        localStorage.setItem("userId", res.userId); // Guardar userId en localStorage
+        localStorage.setItem("userId", res.userId);
         setLoading(false);
 
       } catch (error) {

@@ -1,4 +1,5 @@
 import { useAuth } from "../../contexts/AuthContext";
+import { FaPowerOff } from "react-icons/fa6";
 
 const Header = () => {
   const { currentUser, logoutUser } = useAuth();
@@ -17,9 +18,9 @@ const Header = () => {
       {currentUser && (
         <button
           onClick={logoutUser}
-          className="bg-red-500 text-white py-2 px-4 rounded-xl hover:bg-red-600 transition-colors"
+          className="bg-red-500 text-white p-2 hover:bg-red-600 transition-colors rounded-full"
         >
-          Logout
+          <FaPowerOff size={20}/>
         </button>
       )}
     </header>

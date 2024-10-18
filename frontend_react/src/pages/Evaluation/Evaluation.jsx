@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { getCaseById, updateCaseEvaluation } from "../../api/caseApi";
 import { getAllStatuses } from "../../api/statusApi";
 import { getAllFraudMotives } from "../../api/fraudMotiveApi";
+import { toast } from "react-toastify";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -35,6 +36,10 @@ const Evaluation = () => {
 
   const handleStatusChange = (e) => {
     setCaseData({ ...caseData, statusName: e.target.value });
+  };
+
+  const hanldeFraudMotiveChange = (e) => {
+    setCaseData({ ...caseData, motiveFraudName: e.target.value });
   };
 
   const handleAmountChange = (e) => {
@@ -76,6 +81,7 @@ const Evaluation = () => {
         statuses.find(status => status.statusName === caseData.statusName)?.statusId
       );
       console.log("Actualización exitosa:", updatedCase);
+      toast.success("Evaluación actualizada exitosamente");
       navigate(urlBase + 'home');
     } catch (error) {
       console.error("Error actualizando la evaluación del caso:", error);
@@ -84,7 +90,7 @@ const Evaluation = () => {
 
   return (
     <div className="mt-5">
-      <div className="w-full ">
+      <div className="w-full">
         <div className="flex flex-col  p-8 bg-white rounded-lg shadow dark:border  dark:bg-gray-800 dark:border-gray-700">
           <h1 className="text-1xl md:text-4xl font-bold dark:text-gray-100">
             Evaluación | #Caso{" "}
@@ -218,7 +224,7 @@ const Evaluation = () => {
                   className="appearance-none block w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-motivoFraude"
                   value={caseData.motiveFraudName || ""}
-                  onChange={handleStatusChange}
+                  onChange={hanldeFraudMotiveChange}
                 >
                   {fraudMotives.map((fraudMotive) => (
                     <option

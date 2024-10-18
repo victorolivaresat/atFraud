@@ -90,7 +90,7 @@ const Home = () => {
       {/* Section 2 */}
       <section className="grid grid-cols-1 md:grid-cols-1 mt-10 gap-8">
         <div className="relative overflow-x-auto rounded-xl">
-          <div className="overflow-x-auto relative shadow-md sm:rounded-lg">
+          <div className="overflow-x-auto relative shadow-md">
             <DataTableBase
               columns={columns}
               data={caseData}
