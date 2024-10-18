@@ -1,13 +1,12 @@
-import { useParams } from "react-router-dom";
 import { getCaseById, updateCaseEvaluation } from "../../api/caseApi";
-import { getAllStatuses } from "../../api/statusApi";
+import { useNavigate, useParams } from "react-router-dom";
 import { getAllFraudMotives } from "../../api/fraudMotiveApi";
+import { getAllStatuses } from "../../api/statusApi";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useDropzone } from 'react-dropzone';
+import { useDropzone } from "react-dropzone";
 
 const Evaluation = () => {
-  let { idCase } = useParams(); 
+  let { idCase } = useParams();
   const [caseData, setCaseData] = useState({
     companyName: "",
     analystName: "",
@@ -26,15 +25,14 @@ const Evaluation = () => {
   const urlBase = import.meta.env.VITE_URL_BASE;
   const navigate = useNavigate();
 
-  const onDrop = useCallback(acceptedFiles => {
+  const onDrop = useCallback((acceptedFiles) => {
     console.log(acceptedFiles);
   }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
-
   const handleCancelClick = () => {
-    navigate(urlBase + 'home');
+    navigate(urlBase + "home");
   };
 
   const handleCommentChange = (e) => {
@@ -84,12 +82,15 @@ const Evaluation = () => {
         idCase,
         caseData.commentAnalyst,
         parseFloat(caseData.amount),
-        fraudMotives.find(motive => motive.motiveFraudName === caseData.motiveFraudName)?.motiveFraudId,
-        statuses.find(status => status.statusName === caseData.statusName)?.statusId
+        fraudMotives.find(
+          (motive) => motive.motiveFraudName === caseData.motiveFraudName
+        )?.motiveFraudId,
+        statuses.find((status) => status.statusName === caseData.statusName)
+          ?.statusId
       );
       console.log("Actualización exitosa:", updatedCase);
       toast.success("Evaluación actualizada exitosamente");
-      navigate(urlBase + 'home');
+      navigate(urlBase + "home");
     } catch (error) {
       console.error("Error actualizando la evaluación del caso:", error);
     }
@@ -297,7 +298,7 @@ const Evaluation = () => {
             </div>
           </form>
         </div>
-      </form>
+      </div>
     </div>
   );
 };
