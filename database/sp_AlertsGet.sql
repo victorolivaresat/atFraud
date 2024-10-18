@@ -1,6 +1,6 @@
 USE [totalsecureDESA]
 GO
-/****** Object:  StoredProcedure [dbo].[sp_AlertsGet]    Script Date: 5/09/2024 00:53:42 ******/
+/****** Object:  StoredProcedure [dbo].[sp_AlertsGet]    Script Date: 18/10/2024 10:36:54 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -16,13 +16,10 @@ ALTER PROCEDURE [dbo].[sp_AlertsGet]
 )
 AS
 BEGIN
-	select a.caseId,
-		a.companyId,d.companyName,
-		b.alertId,b.amount,b.comment,b.amount,b.fecRegister,b.flgActive,
-		b.controlId,c.controlCode,c.controlName,c.flgActive,c.familyTransactionId,e.familyName
-	from cases a left join alerts b on a.caseId = b.caseId
-				 left join controls c on b.controlId = c.controlId
-				 left join companies d on a.companyId = d.companyId
-				 left join family_transactions e on c.familyTransactionId = e.familyId
+	SELECT a.caseId, b.alertId, b.fecRegister, b.amount, b.numCase, b.numAlert, b.flgEvaluation, b.flgActive, b.comment,
+		b.controlId,c.controlCode , c.controlName, c.familyTransactionId, d.familyName
+	FROM cases A LEFT JOIN alerts b on a.caseId = b.caseId
+				left join controls c on c.controlId = b.controlId
+				left join family_transactions d on d.familyId = c.familyTransactionId
 	where a.caseId = @caseId
 END
