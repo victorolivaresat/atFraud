@@ -32,7 +32,7 @@ const DataTableBase = (props) => {
       responsive
       progressPending={pending}
       progressComponent={<LoaderDataTable />}
-      pagination
+      // se quito "pagination"
       paginationComponentOptions={paginationComponentOptions}
       paginationRowsPerPageOptions={[5, 10, 20, 50, 100]}
       {...props}

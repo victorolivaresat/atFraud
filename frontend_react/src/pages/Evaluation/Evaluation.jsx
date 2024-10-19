@@ -2,10 +2,14 @@ import { getCaseById, updateCaseEvaluation } from "../../api/caseApi";
 import { getAllFraudMotives } from "../../api/fraudMotiveApi";
 import { useState, useEffect, useCallback } from "react";
 import { getAllStatuses } from "../../api/statusApi";
+import { getAlertsByCaseId } from "../../api/alertApi";
+import { getDocumentsByCaseId } from "../../api/documentApi";
 import { useNavigate } from "react-router-dom";
 import { useDropzone } from "react-dropzone";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import DataTableBase from "../../utils/DataTable";
+import { MdApps } from "react-icons/md";
 
 const Evaluation = () => {
   let { idCase } = useParams();
@@ -24,6 +28,8 @@ const Evaluation = () => {
   });
   const [statuses, setStatuses] = useState([]);
   const [fraudMotives, setFraudMotives] = useState([]);
+  const [alerts, setAlerts] = useState([]);
+  const [documents, setDocuments] = useState([]);
   const urlBase = import.meta.env.VITE_URL_BASE;
   const navigate = useNavigate();
 
@@ -53,6 +59,18 @@ const Evaluation = () => {
     setCaseData({ ...caseData, amount: e.target.value });
   };
 
+  const fetchAlertData = async (idCase) => {
+    const data = await getAlertsByCaseId(idCase);
+    console.log(data);
+    setAlerts(data);
+  };
+
+  const fetchDocumentData = async (idCase) => {
+    const data = await getDocumentsByCaseId(idCase);
+    console.log(data);
+    setDocuments(data);
+  };
+
   const fetchCaseData = async (idCase) => {
     const data = await getCaseById(idCase);
     console.log(data);
@@ -75,6 +93,9 @@ const Evaluation = () => {
     fetchCaseData(idCase);
     fetchStatusesData();
     fetchFraudMotivesData();
+    fetchAlertData(idCase);
+    fetchDocumentData(idCase);
+
   }, [idCase]);
 
   const handleSubmit = async (e) => {
@@ -97,6 +118,60 @@ const Evaluation = () => {
       console.error("Error actualizando la evaluación del caso:", error);
     }
   };
+
+  const columnsControles = [
+    {
+      cell: () => <MdApps style={{ fill: "#43a047" }} />,
+      width: "50px",
+      style: {
+        marginBottom: "-1px",
+      },
+    },
+    {
+      name: "Familia",
+      selector: (row) => row.familyName,
+      sortable: true,
+    },
+    {
+      name: "codControl",
+      selector: (row) => row.controlCode,
+      sortable: true,
+    },
+    {
+      name: "Nombre",
+      selector: (row) => row.controlName,
+      sortable: true,
+    },
+    {
+      name: "FecRegistro",
+      selector: (row) => row.fecRegister,
+      sortable: true,
+    },
+  ];
+  const columnsDocuments = [
+    {
+      cell: () => <MdApps style={{ fill: "#43a047" }} />,
+      width: "50px",
+      style: {
+        marginBottom: "-1px",
+      },
+    },
+    {
+      name: "Documento",
+      selector: (row) => row.documentName,
+      sortable: true,
+    },
+    {
+      name: "Analista",
+      selector: (row) => row.analystName,
+      sortable: true,
+    },
+    {
+      name: "FecRegistro",
+      selector: (row) => row.fecRegistro,
+      sortable: true,
+    },
+  ];
 
   return (
     <div className="mt-1">
@@ -227,7 +302,7 @@ const Evaluation = () => {
                     Monto
                   </label>
                   <input
-                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    className="appearance-none block w-full bg-white-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     id="grid-amount"
                     type="text"
                     value={caseData.amount || ""}
@@ -243,7 +318,7 @@ const Evaluation = () => {
                     Motivo de Fraude
                   </label>
                   <select
-                    className="appearance-none block w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    className="appearance-none block w-full bg-white-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     id="grid-motivoFraude"
                     value={caseData.motiveFraudName || ""}
                     onChange={hanldeFraudMotiveChange}
@@ -267,7 +342,7 @@ const Evaluation = () => {
                     Status
                   </label>
                   <select
-                    className="appearance-none block w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    className="appearance-none block w-full bg-white-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     id="grid-status"
                     value={caseData.statusName || ""}
                     onChange={handleStatusChange}
@@ -325,41 +400,12 @@ const Evaluation = () => {
 
               <div>
                 <div className="flex flex-wrap -mx-3 mb-6">
-                  <table className="min-w-full table-auto border-spacing-2">
-                    <thead>
-                      <tr className="bg-gray-100">
-                        <th className="px-6 py-2 text-left bg-gray-200">
-                          Familia
-                        </th>
-                        <th className="px-6 py-2 text-left bg-gray-200">
-                          codControl
-                        </th>
-                        <th className="px-6 py-2 text-left bg-gray-200">
-                          controlName
-                        </th>
-                        <th className="px-6 py-2 text-left bg-gray-200">
-                          fecRegister
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td className="px-6 py-2 bg-gray-100">
-                          Registros inusuales
-                        </td>
-                        <td className="px-6 py-2 bg-gray-100">AUT001</td>
-                        <td className="px-6 py-2 bg-gray-100">
-                          Concentrador de IPs
-                        </td>
-                        <td className="px-6 py-2 bg-gray-100">15/24/2024</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  {/* <DataTableBase
-                  columns={columns}
-                  data={caseData}
+                  
+                  <DataTableBase
+                  columns={columnsControles}
+                  data={alerts}
                   paginationPerPage={10}
-                /> */}
+                />
                 </div>
               </div>
             </div>
@@ -390,65 +436,13 @@ const Evaluation = () => {
                   )}
                 </div>
                 <div className="w-full  mt-5 bg-white rounded-lg shadow-lg mb-5 ">
-                  <table className="min-w-full table-auto border-spacing-4">
-                    <thead>
-                      <tr className="bg-gray-100">
-                        <th className="px-6 py-2 text-left bg-gray-200">
-                          Document Name
-                        </th>
-                        <th className="px-6 py-2 text-left bg-gray-200">
-                          Analyst Name
-                        </th>
-                        <th className="px-6 py-2 text-left bg-gray-200">
-                          Fec Registro
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td className="px-6 py-2 bg-gray-100">
-                          DocumentoExcel_123456789.xlsx
-                        </td>
-                        <td className="px-6 py-2 bg-gray-100">Nelson Choque</td>
-                        <td className="px-6 py-2 bg-gray-100">
-                          2024-08-12 22:24:32.423
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="px-6 py-2 bg-gray-100">
-                          DocumentoPPT_123456789.xlsx
-                        </td>
-                        <td className="px-6 py-2 bg-gray-100">Nelson Choque</td>
-                        <td className="px-6 py-2 bg-gray-100">
-                          2024-08-12 23:24:32.423
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="px-6 py-2 bg-gray-100">
-                          DocumentoWord_123456789.xlsx
-                        </td>
-                        <td className="px-6 py-2 bg-gray-100">Nelson Choque</td>
-                        <td className="px-6 py-2 bg-gray-100">
-                          2024-08-12 20:24:32.423
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="px-6 py-2 bg-gray-100">
-                          DocumentoTXT_123456789.xlsx
-                        </td>
-                        <td className="px-6 py-2 bg-gray-100">Nelson Choque</td>
-                        <td className="px-6 py-2 bg-gray-100">
-                          2024-08-12 21:24:32.423
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  
 
-                  {/* <DataTableBase
-                  columns={columns}
-                  data={caseData}
-                  paginationPerPage={10}
-                /> */}
+                  <DataTableBase
+                  columns={columnsDocuments}
+                  data={documents}
+                  selectableRows
+                />
                 </div>
               </div>
             </div>

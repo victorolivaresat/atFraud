@@ -94,6 +94,8 @@ const Home = () => {
             <DataTableBase
               columns={columns}
               data={caseData}
+              pagination
+              selectableRows
               paginationPerPage={10}
             />
           </div>
