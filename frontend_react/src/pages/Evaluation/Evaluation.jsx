@@ -10,6 +10,7 @@ import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import DataTableBase from "../../utils/DataTable";
 import { MdApps } from "react-icons/md";
+import Editor from 'react-simple-wysiwyg';
 
 const Evaluation = () => {
   let { idCase } = useParams();
@@ -180,7 +181,7 @@ const Evaluation = () => {
 
         <div className=" flex flex-row gap-x-4">
           {/* #1.1 */}
-          <div className="mt-5 w-1/2  p-8 bg-white rounded-lg shadow dark:border  dark:bg-gray-800 dark:border-gray-700 ">
+          <div className="flex flex-col w-1/2 mt-5  p-8 bg-white rounded-lg shadow dark:border  dark:bg-gray-800 dark:border-gray-700 ">
             <h1 className="text-1xl mb-3 md:text-4xl font-bold dark:text-gray-100">
               Evaluación | #Caso{" "}
               <span className="text-primary-100">{idCase}</span>
@@ -364,13 +365,14 @@ const Evaluation = () => {
                   >
                     Comentario Analista
                   </label>
-                  <textarea
+                  {/* <textarea
                     className="w-full text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white "
                     id="grid-ComentarioAnalista"
                     type="text"
-                    value={caseData.commentAnalyst || ""}
+                    // value={caseData.commentAnalyst || ""}{html}
                     onChange={handleCommentChange}
-                  />
+                  /> */}
+                  <Editor containerProps={{ style: { resize: 'vertical' } }} value={caseData.commentAnalyst || ""} onChange={handleCommentChange} />
                 </div>
               </div>
               {/* Botones */}
