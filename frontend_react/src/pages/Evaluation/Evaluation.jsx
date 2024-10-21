@@ -1,12 +1,11 @@
 import { getCaseById, updateCaseEvaluation } from "../../api/caseApi";
 import { getAllFraudMotives } from "../../api/fraudMotiveApi";
-import { useState, useEffect, useCallback } from "react";
 import { getAllStatuses } from "../../api/statusApi";
 import { getAlertsByCaseId } from "../../api/alertApi";
 import { getDocumentsByCaseId } from "../../api/documentApi";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useCallback } from "react";
+import { useNavigate,useParams } from "react-router-dom";
 import { useDropzone } from "react-dropzone";
-import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import DataTableBase from "../../utils/DataTable";
 import { MdApps } from "react-icons/md";
@@ -48,7 +47,7 @@ const Evaluation = () => {
     setCaseData({ ...caseData, commentAnalyst: e.target.value });
   };
 
-  const hanldeFraudMotiveChange = (e) => {
+  const handleFraudMotiveChange = (e) => {
     setCaseData({ ...caseData, motiveFraudName: e.target.value });
   };
 
@@ -62,31 +61,31 @@ const Evaluation = () => {
 
   const fetchAlertData = async (idCase) => {
     const data = await getAlertsByCaseId(idCase);
-    console.log(data);
+    // console.log(data);
     setAlerts(data);
   };
 
   const fetchDocumentData = async (idCase) => {
     const data = await getDocumentsByCaseId(idCase);
-    console.log(data);
+    // console.log(data);
     setDocuments(data);
   };
 
   const fetchCaseData = async (idCase) => {
     const data = await getCaseById(idCase);
-    console.log(data);
+    // console.log(data);
     setCaseData(data);
   };
 
   const fetchStatusesData = async () => {
     const data = await getAllStatuses();
-    console.log(data);
+    // console.log(data);
     setStatuses(data);
   };
 
   const fetchFraudMotivesData = async () => {
     const data = await getAllFraudMotives();
-    console.log(data);
+    // console.log(data);
     setFraudMotives(data);
   };
 
@@ -96,7 +95,6 @@ const Evaluation = () => {
     fetchFraudMotivesData();
     fetchAlertData(idCase);
     fetchDocumentData(idCase);
-
   }, [idCase]);
 
   const handleSubmit = async (e) => {
@@ -305,7 +303,7 @@ const Evaluation = () => {
                   <input
                     className="appearance-none block w-full bg-white-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     id="grid-amount"
-                    type="text"
+                    type="number"
                     value={caseData.amount || ""}
                     onChange={handleAmountChange}
                   />
@@ -322,7 +320,7 @@ const Evaluation = () => {
                     className="appearance-none block w-full bg-white-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     id="grid-motivoFraude"
                     value={caseData.motiveFraudName || ""}
-                    onChange={hanldeFraudMotiveChange}
+                    onChange={handleFraudMotiveChange}
                   >
                     {fraudMotives.map((fraudMotive) => (
                       <option
@@ -372,7 +370,9 @@ const Evaluation = () => {
                     // value={caseData.commentAnalyst || ""}{html}
                     onChange={handleCommentChange}
                   /> */}
-                  <Editor containerProps={{ style: { resize: 'vertical' } }} value={caseData.commentAnalyst || ""} onChange={handleCommentChange} />
+                  <Editor containerProps={{ style: { resize: 'vertical', height: '500px', overflow: 'auto' } }} 
+                          value={caseData.commentAnalyst || ""} 
+                          onChange={handleCommentChange} />
                 </div>
               </div>
               {/* Botones */}
@@ -394,7 +394,7 @@ const Evaluation = () => {
           </div>
           {/* #2 */}
           <div className="flex flex-col w-1/2">
-            {/* #1.2           */}
+            {/* #1.2     Controles      */}
             <div className="mt-5 h-full  p-8 bg-white rounded-lg shadow dark:border  dark:bg-gray-800 dark:border-gray-700  ">
               <h1 className="text-1xl mb-3 md:text-2xl font-bold dark:text-gray-100">
                 Controles
@@ -412,7 +412,7 @@ const Evaluation = () => {
               </div>
             </div>
 
-            {/* #2.1 */}
+            {/* #2.1 Documentos*/}
             <div className="mt-5 h-full  p-8 bg-white rounded-lg shadow dark:border  dark:bg-gray-800 dark:border-gray-700  ">
               <h5 className="text-1xl mb-3 md:text-2xl font-bold dark:text-gray-100">
                 Documentos

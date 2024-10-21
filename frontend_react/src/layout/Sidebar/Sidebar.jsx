@@ -39,16 +39,10 @@ const Sidebar = () => {
               <RiHome3Line /> Home
             </a>
             <a
-              href="#"
+              href="/evaluations"
               className="flex items-center gap-4 text-white py-2 px-4 rounded-xl hover:bg-primary-900/50 transition-colors"
             >
-              <RiFileCopyLine /> Evaluacion
-            </a>
-            <a
-              href="#"
-              className="flex items-center gap-4 text-white py-2 px-4 rounded-xl hover:bg-primary-900/50 transition-colors"
-            >
-              <RiWalletLine /> Investigacion
+              <RiFileCopyLine /> Evaluacion Masiva
             </a>
             <a
               href="#"
