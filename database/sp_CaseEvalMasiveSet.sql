@@ -1,6 +1,6 @@
 USE [totalsecureDESA]
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CaseEvalSet]    Script Date: 21/10/2024 12:00:37 ******/
+/****** Object:  StoredProcedure [dbo].[sp_CaseEvalMasiveSet]    Script Date: 22/10/2024 13:27:17 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -10,13 +10,14 @@ GO
 -- Create Date: 02/09/2024
 -- Description: Se toman los casos pendientes del analista en consulta
 -- =============================================
-create PROCEDURE [dbo].[sp_CaseEvalMasiveSet]
+ALTER PROCEDURE [dbo].[sp_CaseEvalMasiveSet]
 (	
-    @caseIds NVARCHAR(MAX),  -- Cambiado a NVARCHAR para manejar una lista de IDs
-    @newComment NVARCHAR(MAX),
+    @caseIds VARCHAR(MAX),  -- Cambiado a NVARCHAR para manejar una lista de IDs
+    @newComment VARCHAR(MAX),
     @newAmount DECIMAL(16, 2),
     @newFraudMotiveId INT,
-    @newStatusId INT
+    @newStatusId INT,
+    @analystId INT
 )
 AS
 BEGIN
@@ -27,16 +28,29 @@ BEGIN
         -- Actualizar campos de acuerdo a los caseIds
         UPDATE evaluations
         SET 
-            commentAnalyst = @newComment,
-            amount = @newAmount,
-            fraudMotiveId = @newFraudMotiveId,
-            fecUpdate = GETDATE(),  -- Actualiza fecUpdate a la fecha actual
-            -- Si el nuevo statusId es 2, actualiza fecEndEvalution y cambia statusId
-            fecEndEvalution = CASE 
+            commentAnalyst = CASE 
+                                WHEN LEN(ISNULL(@newComment, '')) > 0 THEN @newComment 
+                                ELSE commentAnalyst 
+                             END,
+            amount = CASE 
+                        WHEN @newAmount IS NOT NULL THEN @newAmount 
+                        ELSE amount 
+                     END,
+            fraudMotiveId = CASE 
+                               WHEN @newFraudMotiveId != -1 THEN @newFraudMotiveId 
+                               ELSE fraudMotiveId 
+                            END,
+            statusId = CASE 
+                          WHEN @newStatusId IS NOT NULL THEN @newStatusId 
+                          ELSE statusId 
+                       END,
+		   -- Si el nuevo statusId es 2, actualiza fecEndEvalution y cambia statusId
+			fecEndEvalution = CASE 
                                 WHEN @newStatusId = 2 THEN GETDATE() 
                                 ELSE fecEndEvalution 
                               END,
-            statusId = @newStatusId
+            fecUpdate = GETDATE(),  -- Actualiza fecUpdate a la fecha actual
+			analystId = @analystId
         WHERE caseId IN (SELECT value FROM dbo.fn_SplitString(@caseIds, ','));  -- Usamos la función de división aquí
 
         -- Verificar si se afectó alguna fila
@@ -51,7 +65,9 @@ BEGIN
         COMMIT TRANSACTION;
 
         -- Devolver un mensaje de éxito
-        SELECT 'Actualización exitosa' AS Mensaje, * FROM evaluations WHERE caseId IN (SELECT value FROM dbo.fn_SplitString(@caseIds, ','));
+        SELECT 'Actualización exitosa' AS Mensaje, * 
+		FROM evaluations 
+		WHERE caseId IN (SELECT value FROM dbo.fn_SplitString(@caseIds, ','));
 
     END TRY
     BEGIN CATCH
@@ -72,4 +88,3 @@ BEGIN
         RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
     END CATCH
 END;
-GO
