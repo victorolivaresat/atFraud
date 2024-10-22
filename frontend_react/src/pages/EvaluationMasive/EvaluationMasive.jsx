@@ -16,7 +16,7 @@ const EvaluationMasive = () => {
   const userId = localStorage.getItem("userId");
   // const navigate = useNavigate();
 
-  const [casesId, setCasesId] = useState("");
+  const [casesId, setCasesId] = useState([]);
   const [amount, setAmount] = useState("");
   const [comment, setComment] = useState("");
   const [statuses, setStatuses] = useState([]);
@@ -108,22 +108,43 @@ const EvaluationMasive = () => {
     fetchFraudMotivesData(); 
     fetchAnalystsData();
     getAnalystData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+
+    if (casesId.length === 0) {
+      toast.error("Debe seleccionar al menos un caso");
+      return;
+    }
+
     try {
       console.log(casesId);
       console.log("Comentario",comment);
+      let parseAmount = parseFloat(amount.replace(/[^\d.-]/g, ''))
+
+      console.log({
+        casesId: typeof casesId,
+        comment: typeof comment,
+        parseAmount: typeof parseAmount,
+        fraudMotive: typeof fraudMotive,
+        status: typeof status,
+        analyst: typeof analyst,
+      });
+
+
       const updatedCase = await updateCasesEvaluationMasive(
-        casesId,
+        casesId.join(","),
         comment,
-        parseFloat(amount),
+        parseAmount,
         fraudMotives.find(
           (motive) => motive.motiveFraudName === fraudMotive
         )?.motiveFraudId,
         statuses.find((s) => s.statusName === status)
-          ?.statusId
+          ?.statusId,
+        analysts.find((a) => a.name === analyst)?.analystId 
       );
       toast.success("Todos los casos fueron actualizados exitosamente");
       console.log("Casos Masivos actualizados:", updatedCase);
@@ -202,8 +223,9 @@ const EvaluationMasive = () => {
   
   const handleChange = ({ selectedRows }) => {
     // console.log("Selected Rows: ", selectedRows);
-    const cases = selectedRows.map((row) => row.caseId).join(',');
-    setCasesId(cases)
+    const cases = selectedRows.map((row) => row.caseId);
+    setCasesId(cases);
+    console.log("Casos Seleccionados: ", cases);
     return cases;
   };
 
@@ -252,7 +274,7 @@ const EvaluationMasive = () => {
                     value={fraudMotive  || ""}
                     onChange={handleFraudMotiveChange}
                   >
-                    <option key="-1" value="" disabled>
+                    <option key="-1" value="">
                       Seleccione un motivo
                     </option>
                     {fraudMotives.map((f) => (
@@ -279,7 +301,7 @@ const EvaluationMasive = () => {
                     value={status || ""}
                     onChange={handleStatusChange}
                   >
-                    <option key="-1" value="" disabled>
+                    <option key="-1" value="" >
                       Seleccione un motivo
                     </option>
                     {statuses.map((s) => (

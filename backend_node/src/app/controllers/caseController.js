@@ -71,14 +71,20 @@ const updateCaseEvaluation = async (req, res) => {
   }
 };
 
+
+// 
 const updateCasesEvaluationMasive = async (req, res) => {
+
+
+  console.log("updateCasesEvaluationMasive", req.body);
+
   try {
-    const { caseIds, newComment, newAmount, newFraudMotiveId, newStatusId } = req.body;
+    const { caseIds, newComment, newAmount, newFraudMotiveId, newStatusId, analystId } = req.body;
 
     const result = await sequelize.query(
-      "EXEC [dbo].[sp_CaseEvalMasiveSet] @caseIds = :caseIds, @newComment = :newComment, @newAmount = :newAmount, @newFraudMotiveId = :newFraudMotiveId, @newStatusId = :newStatusId",
+      "EXEC [dbo].[sp_CaseEvalMasiveSet] @caseIds = :caseIds, @newComment = :newComment, @newAmount = :newAmount, @newFraudMotiveId = :newFraudMotiveId, @newStatusId = :newStatusId, @analystId = :analystId",
       {
-        replacements: { caseIds, newComment, newAmount, newFraudMotiveId, newStatusId },
+        replacements: { caseIds, newComment, newAmount, newFraudMotiveId, newStatusId, analystId },
         type: QueryTypes.SELECT,
       }
     );

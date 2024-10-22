@@ -12,7 +12,7 @@ const routes = express.Router();
 routes.get("/cases/:caseId", authRequired, caseController.getCaseById);
 routes.get("/cases/evaluation/:analystId", authRequired, caseController.getCasesInEvaluation);
 routes.put("/cases/evaluation/:caseId", authRequired, caseController.updateCaseEvaluation);
-routes.put("/cases/evaluation/masive", authRequired, caseController.updateCasesEvaluationMasive);
+routes.put("/cases/evaluations/masive", authRequired, caseController.updateCasesEvaluationMasive);
 routes.get("/cases/evaluation/attended/:analystId", authRequired, caseController.getEvaluationsAttended);
 routes.get("/cases/evaluation/pending/:analystId", authRequired, caseController.getEvaluationsPending);
 

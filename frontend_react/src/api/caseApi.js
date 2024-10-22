@@ -20,13 +20,24 @@ export const updateCaseEvaluation = async (caseId, newComment, newAmount, newFra
   return data;
 };
 
-export const updateCasesEvaluationMasive = async (caseIds, newComment, newAmount, newFraudMotiveId, newStatusId) => {
-  const { data } = await axios.put(`cases/evaluation/masive`, {
+export const updateCasesEvaluationMasive = async (caseIds, newComment, newAmount, newFraudMotiveId, newStatusId, analystId) => {
+  
+  console.log({
+    "caseIds" : caseIds,
+    "newComment" : newComment,
+    "newAmount" : newAmount,
+    "newFraudMotiveId" : newFraudMotiveId,
+    "newStatusId" : newStatusId,
+    "analystId" : analystId
+  });
+  
+  const { data } = await axios.put(`cases/evaluations/masive`, {
     caseIds,
     newComment,
     newAmount,
     newFraudMotiveId,
-    newStatusId
+    newStatusId,
+    analystId
   });
   return data;
 };
