@@ -19,3 +19,13 @@ export const updateCaseEvaluation = async (caseId, newComment, newAmount, newFra
   });
   return data;
 };
+
+export const getEvaluationsAttended = async (analystId) => {
+  const { data } = await axios.get(`cases/evaluation/attended/${analystId}`);
+  return data;
+};
+
+export const getEvaluationsPending = async (analystId) => {
+  const { data } = await axios.get(`cases/evaluation/pending/${analystId}`);
+  return data;
+};

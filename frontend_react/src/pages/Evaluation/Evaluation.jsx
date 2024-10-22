@@ -210,7 +210,7 @@ const Evaluation = () => {
           <div className="flex flex-col w-1/2 mt-5  p-8 bg-white rounded-lg shadow dark:border  dark:bg-gray-800 dark:border-gray-700 ">
             <h1 className="text-1xl mb-3 md:text-4xl font-bold dark:text-gray-100">
               Evaluación | #Caso{" "}
-              <span className="text-primary-100">{idCase}</span>
+              <span className="text-primary-100 dark:text-blue-400">{idCase}</span>
             </h1>
 
             <div>

@@ -1,5 +1,9 @@
 import { RiFileTextFill, RiAlarmWarningFill } from "react-icons/ri";
-import { getCasesInEvaluation } from "../../api/caseApi";
+import {
+  getCasesInEvaluation,
+  getEvaluationsAttended,
+  getEvaluationsPending,
+} from "../../api/caseApi";
 import DataTableBase from "../../utils/DataTable";
 import { useState, useEffect } from "react";
 import { MdApps } from "react-icons/md";
@@ -7,6 +11,8 @@ import { MdApps } from "react-icons/md";
 const Home = () => {
   const urlBase = import.meta.env.VITE_URL_BASE;
   const [caseData, setCaseData] = useState([]);
+  const [attendedCount, setAttendedCount] = useState(0);
+  const [pendingCount, setPendingCount] = useState(0);
   const userId = localStorage.getItem("userId");
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -20,7 +26,20 @@ const Home = () => {
         console.error("Error fetching case data:", error);
       }
     };
+
+    const fetchEvaluationCounts = async () => {
+      try {
+        const attendedData = await getEvaluationsAttended(userId);
+        const pendingData = await getEvaluationsPending(userId);
+        setAttendedCount(attendedData.attendedCount);
+        setPendingCount(pendingData.pendingCount);
+      } catch (error) {
+        console.error("Error fetching evaluation counts:", error);
+      }
+    };
+
     fetchCaseData();
+    fetchEvaluationCounts();
   }, [userId]);
 
   const columns = [
@@ -86,14 +105,14 @@ const Home = () => {
         <div className="bg-primary-100 p-8 rounded-xl text-gray-300 flex flex-col gap-6">
           <RiFileTextFill className="text-5xl" />
           <h4 className="text-2xl">Eval Pendientes</h4>
-          <span className="text-5xl text-white">59</span>
+          <span className="text-5xl text-white">{pendingCount}</span>
         </div>
 
         {/* Card 2 */}
         <div className="bg-primary-100 p-8 rounded-xl text-gray-300 flex flex-col gap-6">
           <RiAlarmWarningFill className="text-5xl" />
           <h4 className="text-2xl">Atendidas</h4>
-          <span className="text-5xl text-white">235</span>
+          <span className="text-5xl text-white">{attendedCount}</span>
         </div>
       </section>
 

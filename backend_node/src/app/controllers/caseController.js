@@ -71,8 +71,54 @@ const updateCaseEvaluation = async (req, res) => {
   }
 };
 
+const getEvaluationsAttended = async (req, res) => {
+  try {
+    const { analystId } = req.params;
+    const result = await sequelize.query(
+      "DECLARE @attendedCount INT; EXEC [dbo].[sp_EvalAtendidas] @analystId = :analystId, @attendedCount = @attendedCount OUTPUT; SELECT @attendedCount AS attendedCount;",
+      {
+        replacements: { analystId },
+        type: QueryTypes.SELECT,
+      }
+    );
+
+    if (result.length > 0) {
+      res.status(200).json(result[0]);
+    } else {
+      res.status(404).json({ error: "No evaluations found for the given analyst" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: `Error fetching evaluations: ${error.message}` });
+  }
+};
+
+const getEvaluationsPending = async (req, res) => {
+  try {
+    const { analystId } = req.params;
+    const result = await sequelize.query(
+      "DECLARE @pendingCount INT; EXEC [dbo].[sp_EvalPendientes] @analystId = :analystId, @pendingCount = @pendingCount OUTPUT; SELECT @pendingCount AS pendingCount;",
+      {
+        replacements: { analystId },
+        type: QueryTypes.SELECT,
+      }
+    );
+
+    if (result.length > 0) {
+      res.status(200).json(result[0]);
+    } else {
+      res.status(404).json({ error: "No pending evaluations found for the given analyst" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: `Error fetching pending evaluations: ${error.message}` });
+  }
+};
+
 module.exports = {
   getCaseById,
   getCasesInEvaluation,
   updateCaseEvaluation,
+  getEvaluationsAttended,
+  getEvaluationsPending,
 };
