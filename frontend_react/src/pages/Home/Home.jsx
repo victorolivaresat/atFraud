@@ -45,9 +45,9 @@ const Home = () => {
   const columns = [
     {
       cell: () => <MdApps style={{ fill: "#43a047" }} />,
-      width: "50px",
+      width: "10px",
       style: {
-        marginBottom: "-1px",
+        // marginBottom: "-1px",
       },
     },
     {
@@ -74,7 +74,7 @@ const Home = () => {
     },
     {
       name: "Dias",
-      selector: (row) => row.firstName,
+      selector: (row) => row.Dias,
       sortable: true,
     },
     {
@@ -93,7 +93,9 @@ const Home = () => {
   const filteredData = caseData.filter((item) => {
     return (
       item.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.lastName.toLowerCase().includes(searchTerm.toLowerCase())
+      item.lastName.toLowerCase().includes(searchTerm.toLowerCase())||
+      item.caseId.toLowerCase().includes(searchTerm.toLowerCase())||
+      item.externalId.toLowerCase().includes(searchTerm.toLowerCase())
     );
   });
 
@@ -127,7 +129,7 @@ const Home = () => {
                 placeholder="Buscar"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="p-2 border rounded"
+                className="p-2 border rounded w-1/3 " 
               />
             </div>
 

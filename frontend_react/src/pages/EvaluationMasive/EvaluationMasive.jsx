@@ -94,9 +94,9 @@ const EvaluationMasive = () => {
   const columns = [
     {
       cell: () => <MdApps style={{ fill: "#43a047" }} />,
-      width: "50px",
+      width: "10px",
       style: {
-        marginBottom: "-1px",
+        // marginBottom: "-1px",
       },
     },
     {
@@ -105,8 +105,18 @@ const EvaluationMasive = () => {
       sortable: true,
     },
     {
+      name: "NUMCASO",
+      selector: (row) => row.numCase,
+      sortable: true,
+    },
+    {
       name: "Cod. Cliente",
       selector: (row) => row.externalId,
+      sortable: true,
+    },
+    {
+      name: "NumDoc",
+      selector: (row) => row.documentNumber,
       sortable: true,
     },
     {
@@ -116,7 +126,7 @@ const EvaluationMasive = () => {
     },
     {
       name: "Dias",
-      selector: (row) => row.firstName,
+      selector: (row) => row.Dias,
       sortable: true,
     },
     {
