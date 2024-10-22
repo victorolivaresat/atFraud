@@ -1,25 +1,31 @@
-import { getCasesInEvaluation } from "../../api/caseApi";
+import { getCasesInEvaluation, updateCasesEvaluationMasive } from "../../api/caseApi";
 import { getAllFraudMotives } from "../../api/fraudMotiveApi";
 import { getAllStatuses } from "../../api/statusApi";
+import { getAllAnalysts,getAnalyst } from "../../api/analystAPI";
 import DataTableBase from "../../utils/DataTable";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { MdApps } from "react-icons/md";
 import Editor from 'react-simple-wysiwyg';
+import { toast } from "react-toastify";
 
 const EvaluationMasive = () => {
   const urlBase = import.meta.env.VITE_URL_BASE;
   const [caseData, setCaseData] = useState([]);
   const userId = localStorage.getItem("userId");
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
+  const [casesId, setCasesId] = useState("");
   const [amount, setAmount] = useState("");
   const [comment, setComment] = useState("");
   const [statuses, setStatuses] = useState([]);
   const [status, setStatus] = useState("");
   const [fraudMotives, setFraudMotives] = useState([]);
   const [fraudMotive, setFraudMotive] = useState("");
+  const [analysts, setAnalysts] = useState([]);
+  const [analyst, setAnalyst] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
 
   
 
@@ -30,7 +36,12 @@ const EvaluationMasive = () => {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   const handleCancelClick = () => {
-    navigate(urlBase + "home");
+    // navigate(urlBase + "home");
+    setAmount("") 
+    setFraudMotive("")
+    setStatus("")
+    setComment("")
+    getAnalystData()
   };
 
   const handleCommentChange = (e) => {
@@ -53,32 +64,38 @@ const EvaluationMasive = () => {
   };  
 
   const handleStatusChange = (e) => {
-    setStatus(e.target.value);
-    console.log(e.target.value);
+    setStatus(e.target.value);    
   };
 
   const handleFraudMotiveChange = (e) => {
-    setFraudMotive(e.target.value);
-    console.log(e.target.value);
+    setFraudMotive(e.target.value);    
   };
 
+  const handleAnalystChange = (e) => {
+    setAnalyst(e.target.value);    
+  };
+  const getAnalystData = async () => {
+    const user = await getAnalyst(userId);
+    setAnalyst(user.name);     
+  };
+
+  const fetchAnalystsData = async () => {
+    const data = await getAllAnalysts();
+    setAnalysts(data);     
+  };
 
   const fetchStatusesData = async () => {
-    const data = await getAllStatuses();
-    // console.log(data);
+    const data = await getAllStatuses();    
     setStatuses(data);
   };
  
   const fetchFraudMotivesData = async () => {
-    const data = await getAllFraudMotives();
-    console.log(data);
+    const data = await getAllFraudMotives();    
     setFraudMotives(data);
   };
   const fetchCaseData = async (userId) => {
     try {
-      const data = await getCasesInEvaluation(userId);
-      console.log("Data:")
-      // console.log(data);
+      const data = await getCasesInEvaluation(userId);      
       setCaseData(data);
     } catch (error) {
       console.error("Error fetching case data:", error);
@@ -89,7 +106,32 @@ const EvaluationMasive = () => {
     fetchCaseData(userId);
     fetchStatusesData();
     fetchFraudMotivesData(); 
+    fetchAnalystsData();
+    getAnalystData();
   }, [userId]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      console.log(casesId);
+      console.log("Comentario",comment);
+      const updatedCase = await updateCasesEvaluationMasive(
+        casesId,
+        comment,
+        parseFloat(amount),
+        fraudMotives.find(
+          (motive) => motive.motiveFraudName === fraudMotive
+        )?.motiveFraudId,
+        statuses.find((s) => s.statusName === status)
+          ?.statusId
+      );
+      toast.success("Todos los casos fueron actualizados exitosamente");
+      console.log("Casos Masivos actualizados:", updatedCase);
+      // navigate(urlBase + "home");
+    } catch (error) {
+      console.error("Error actualizando los casos seleccionados:", error);
+    }
+  };
 
   const columns = [
     {
@@ -101,7 +143,13 @@ const EvaluationMasive = () => {
     },
     {
       name: "ID CASO",
-      selector: (row) => row.caseId,
+      selector: (row) => <a
+      className="font-medium text-red-600 hover:underline hover:text-red-400"
+      href={urlBase + "evaluation/" + row.caseId}
+      target="_blank"
+    >
+      {row.caseId}
+    </a>,
       sortable: true,
     },
     {
@@ -141,11 +189,27 @@ const EvaluationMasive = () => {
     },
   ];
 
+  // Filtro de datos basado en el término de búsqueda
+  const filteredData = caseData.filter((item) => {
+    return (
+      item.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.lastName.toLowerCase().includes(searchTerm.toLowerCase())||
+      item.caseId.toLowerCase().includes(searchTerm.toLowerCase())||
+      item.externalId.toLowerCase().includes(searchTerm.toLowerCase())||
+      item.numCase.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  });
+  
+  const handleChange = ({ selectedRows }) => {
+    // console.log("Selected Rows: ", selectedRows);
+    const cases = selectedRows.map((row) => row.caseId).join(',');
+    setCasesId(cases)
+    return cases;
+  };
+
   return (
     <div>
-      <form className="my-1"
-      // onSubmit={handleSubmit}
-      >
+      <form className="my-1" onSubmit={handleSubmit}>
         {/* #1 */}
 
         <div className=" flex flex-row gap-x-4">
@@ -169,6 +233,7 @@ const EvaluationMasive = () => {
                     className="appearance-none block w-full bg-white-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     id="grid-amount"
                     type="text"
+                    placeholder="Agregar Monto"
                     value={amount  || ""}
                     onChange={handleAmountChange}
                   />
@@ -187,6 +252,9 @@ const EvaluationMasive = () => {
                     value={fraudMotive  || ""}
                     onChange={handleFraudMotiveChange}
                   >
+                    <option key="-1" value="" disabled>
+                      Seleccione un motivo
+                    </option>
                     {fraudMotives.map((f) => (
                       <option
                         key={f.motiveFraudId}
@@ -211,11 +279,37 @@ const EvaluationMasive = () => {
                     value={status || ""}
                     onChange={handleStatusChange}
                   >
+                    <option key="-1" value="" disabled>
+                      Seleccione un motivo
+                    </option>
                     {statuses.map((s) => (
                       <option key={s.statusId}
                         value={s.statusName}
                       >
                         {s.statusName}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                {/* Status */}
+                <div className="w-full md:w-1/3 px-3 mt-4">
+                  <label
+                    className="block uppercase tracking-wide dark:text-gray-50 text-gray-700 text-xs font-bold mb-2"
+                    htmlFor="grid-status"
+                  >
+                    Analistas
+                  </label>
+                  <select
+                    className="appearance-none block w-full bg-white-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    id="grid-status"
+                    value={analyst || ""}
+                    onChange={handleAnalystChange}
+                  >
+                    {analysts.map((a) => (
+                      <option key={a.analystId}
+                        value={a.name}
+                      >
+                        {a.name}
                       </option>
                     ))}
                   </select>
@@ -247,7 +341,7 @@ const EvaluationMasive = () => {
                   onClick={handleCancelClick}
                   className="w-full ml-4 md:w-1/6 mt-5 text-white bg-blue-400 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                 >
-                  Cancelar
+                  Limpiar
                 </button>
               </div>
             </div>
@@ -287,12 +381,22 @@ const EvaluationMasive = () => {
         <section className="grid grid-cols-1 md:grid-cols-1 mt-10 gap-8">
           <div className="relative overflow-x-auto rounded-xl">
             <div className="overflow-x-auto relative shadow-md">
+              <div className="flex justify-end mb-4">
+                <input
+                  type="text"
+                  placeholder="Buscar"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="p-2 border rounded w-1/3 " 
+                />
+              </div>
               <DataTableBase
                 columns={columns}
-                data={caseData}
+                data={filteredData}
                 pagination
                 selectableRows
                 paginationPerPage={10}
+                onSelectedRowsChange={handleChange}
               />
             </div>
           </div>
