@@ -20,6 +20,17 @@ export const updateCaseEvaluation = async (caseId, newComment, newAmount, newFra
   return data;
 };
 
+export const updateCasesEvaluationMasive = async (caseIds, newComment, newAmount, newFraudMotiveId, newStatusId) => {
+  const { data } = await axios.put(`cases/evaluation/masive`, {
+    caseIds,
+    newComment,
+    newAmount,
+    newFraudMotiveId,
+    newStatusId
+  });
+  return data;
+};
+
 export const getEvaluationsAttended = async (analystId) => {
   const { data } = await axios.get(`cases/evaluation/attended/${analystId}`);
   return data;

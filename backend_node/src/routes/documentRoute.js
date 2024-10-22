@@ -12,9 +12,8 @@ const upload = multer({ dest: "public/cases" });
  *   description: Document API
  */
 
-// Ruta para obtener los documentos por caso
 routes.get("/documents/:caseId", authRequired, documentController.getDocumentsByCaseId);
 routes.post("/documents/upload", authRequired, upload.single("document"), documentController.addDocumentToCase);
-
+routes.delete("/documents/:documentId", authRequired, documentController.deleteDocumentById);
 
 module.exports = routes;

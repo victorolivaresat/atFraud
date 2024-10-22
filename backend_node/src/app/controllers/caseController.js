@@ -71,6 +71,29 @@ const updateCaseEvaluation = async (req, res) => {
   }
 };
 
+const updateCasesEvaluationMasive = async (req, res) => {
+  try {
+    const { caseIds, newComment, newAmount, newFraudMotiveId, newStatusId } = req.body;
+
+    const result = await sequelize.query(
+      "EXEC [dbo].[sp_CaseEvalMasiveSet] @caseIds = :caseIds, @newComment = :newComment, @newAmount = :newAmount, @newFraudMotiveId = :newFraudMotiveId, @newStatusId = :newStatusId",
+      {
+        replacements: { caseIds, newComment, newAmount, newFraudMotiveId, newStatusId },
+        type: QueryTypes.SELECT,
+      }
+    );
+
+    if (result.length > 0) {
+      res.status(200).json(result);
+    } else {
+      res.status(404).json({ error: "No cases found or no changes made" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: `Error updating cases evaluation: ${error.message}` });
+  }
+};
+
 const getEvaluationsAttended = async (req, res) => {
   try {
     const { analystId } = req.params;
@@ -119,6 +142,7 @@ module.exports = {
   getCaseById,
   getCasesInEvaluation,
   updateCaseEvaluation,
+  updateCasesEvaluationMasive,
   getEvaluationsAttended,
   getEvaluationsPending,
 };

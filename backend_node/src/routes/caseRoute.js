@@ -11,8 +11,9 @@ const routes = express.Router();
  */
 routes.get("/cases/:caseId", authRequired, caseController.getCaseById);
 routes.get("/cases/evaluation/:analystId", authRequired, caseController.getCasesInEvaluation);
-routes.put("/cases/evaluation/:caseId", authRequired, caseController.updateCaseEvaluation); // Nueva ruta para actualizar la evaluación
-routes.get("/cases/evaluation/attended/:analystId", authRequired, caseController.getEvaluationsAttended); // Nueva ruta para evaluaciones atendidas
-routes.get("/cases/evaluation/pending/:analystId", authRequired, caseController.getEvaluationsPending); // Nueva ruta para evaluaciones pendientes
+routes.put("/cases/evaluation/:caseId", authRequired, caseController.updateCaseEvaluation);
+routes.put("/cases/evaluation/masive", authRequired, caseController.updateCasesEvaluationMasive);
+routes.get("/cases/evaluation/attended/:analystId", authRequired, caseController.getEvaluationsAttended);
+routes.get("/cases/evaluation/pending/:analystId", authRequired, caseController.getEvaluationsPending);
 
 module.exports = routes;
