@@ -1,4 +1,8 @@
-import { getDocumentsByCaseId, addDocumentToCase } from "../../api/documentApi";
+import {
+  getDocumentsByCaseId,
+  addDocumentToCase,
+  deleteDocumentById,
+} from "../../api/documentApi";
 import { getCaseById, updateCaseEvaluation } from "../../api/caseApi";
 import { getAllFraudMotives } from "../../api/fraudMotiveApi";
 import { useNavigate, useParams } from "react-router-dom";
@@ -8,13 +12,13 @@ import { getAllStatuses } from "../../api/statusApi";
 import DataTableBase from "../../utils/DataTable";
 import { useDropzone } from "react-dropzone";
 import Editor from "react-simple-wysiwyg";
+import { FaTrash } from "react-icons/fa";
 import { MdApps } from "react-icons/md";
 import { toast } from "react-toastify";
 
 const Evaluation = () => {
-
   let { idCase } = useParams();
-  
+
   const [caseData, setCaseData] = useState({
     companyName: "",
     analystName: "",
@@ -28,7 +32,7 @@ const Evaluation = () => {
     commentAnalyst: "",
     amount: "",
   });
-  
+
   const [fraudMotives, setFraudMotives] = useState([]);
   const [documents, setDocuments] = useState([]);
   const urlBase = import.meta.env.VITE_URL_BASE;
@@ -36,33 +40,35 @@ const Evaluation = () => {
   const [alerts, setAlerts] = useState([]);
   const navigate = useNavigate();
 
+  const [idDocument, setIdDocument] = useState([]);
+
   const onDrop = useCallback(
     async (acceptedFiles) => {
       if (acceptedFiles.length === 0) {
         toast.error("No se seleccionaron archivos.");
         return;
       }
-      
+
       try {
         for (let i = 0; i < acceptedFiles.length; i++) {
           const formData = new FormData();
-          
+
           formData.append("document", acceptedFiles[i]);
           formData.append("caseId", idCase);
           formData.append("flgEvaluation", true);
           formData.append("analystId", 1);
-  
+
           console.log("formData caseId:", formData.get("caseId"));
           console.log("formData flgEvaluation:", formData.get("flgEvaluation"));
           console.log("formData analystId:", formData.get("analystId"));
           console.log("formData document:", acceptedFiles[i].name);
-  
+
           const response = await addDocumentToCase(formData);
           console.log("Documento subido:", response.data);
         }
-  
+
         toast.success("Todos los documentos se han subido exitosamente");
-  
+
         fetchDocumentData(idCase);
       } catch (error) {
         toast.error("Error subiendo los documentos");
@@ -71,7 +77,7 @@ const Evaluation = () => {
     },
     [idCase]
   );
-  
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   const handleCancelClick = () => {
@@ -203,6 +209,41 @@ const Evaluation = () => {
     },
   ];
 
+  const handleChangeDocuments = ({ selectedRows }) => {
+    console.log("Selected Rows: ", selectedRows);
+
+    const data = selectedRows.map((row) => row.documentId);
+    console.log("Data: ", data);
+    setIdDocument(data);
+  };
+
+  const handleDeleteDocuments = async (e, documentIds) => {
+    e.preventDefault();
+
+    console.log("Document IDs: ", documentIds);
+
+    if (!(documentIds && documentIds.length > 0)) {
+      toast.error("Selecciona al menos un documento para eliminar");
+      return;
+    }
+
+    try {
+      for (const documentId of documentIds) {
+        await deleteDocumentById(documentId);
+      }
+      toast.success("Documentos eliminados exitosamente");
+
+      if (typeof idCase !== "undefined") {
+        fetchDocumentData(idCase);
+      } else {
+        console.warn("idCase no está definido");
+      }
+    } catch (error) {
+      toast.error("Error eliminando los documentos");
+      console.error("Error eliminando los documentos:", error);
+    }
+  };
+
   return (
     <div className="mt-1">
       <form className="my-1" onSubmit={handleSubmit}>
@@ -210,7 +251,9 @@ const Evaluation = () => {
           <div className="flex flex-col w-1/2 mt-5  p-8 bg-white rounded-lg shadow dark:border  dark:bg-gray-800 dark:border-gray-700 ">
             <h1 className="text-1xl mb-3 md:text-4xl font-bold dark:text-gray-100">
               Evaluación | #Caso{" "}
-              <span className="text-primary-100 dark:text-blue-400">{idCase}</span>
+              <span className="text-primary-100 dark:text-blue-400">
+                {idCase}
+              </span>
             </h1>
 
             <div>
@@ -452,11 +495,22 @@ const Evaluation = () => {
                     </p>
                   )}
                 </div>
-                <div className="w-full  mt-5 bg-white rounded-lg shadow-lg mb-5 ">
+                <div className="w-full mt-5 bg-white rounded-lg shadow-lg mb-5">
+                  <div className="flex justify-end p-6">
+                    <button
+                      className="text-red-400 hover:text-red-700 focus:outline-none"
+                      onClick={(e) => {
+                        handleDeleteDocuments(e, idDocument);
+                      }}
+                    >
+                      <FaTrash size={24} />
+                    </button>
+                  </div>
                   <DataTableBase
                     columns={columnsDocuments}
                     data={documents}
                     selectableRows
+                    onSelectedRowsChange={handleChangeDocuments}
                   />
                 </div>
               </div>
