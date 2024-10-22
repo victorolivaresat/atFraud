@@ -8,12 +8,13 @@ const Home = () => {
   const urlBase = import.meta.env.VITE_URL_BASE;
   const [caseData, setCaseData] = useState([]);
   const userId = localStorage.getItem("userId");
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const fetchCaseData = async () => {
       try {
         const data = await getCasesInEvaluation(userId);
-        console.log(data); 
+        console.log(data);
         setCaseData(data);
       } catch (error) {
         console.error("Error fetching case data:", error);
@@ -69,6 +70,14 @@ const Home = () => {
     },
   ];
 
+  // Filtro de datos basado en el término de búsqueda
+  const filteredData = caseData.filter((item) => {
+    return (
+      item.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.lastName.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  });
+
   return (
     <div>
       {/* Section 1 */}
@@ -87,13 +96,25 @@ const Home = () => {
           <span className="text-5xl text-white">235</span>
         </div>
       </section>
+
       {/* Section 2 */}
+
       <section className="grid grid-cols-1 md:grid-cols-1 mt-10 gap-8">
         <div className="relative overflow-x-auto rounded-xl">
-          <div className="overflow-x-auto relative shadow-md">
+          <div className="overflow-x-auto relative shadow-md p-8 bg-white">
+            <div className="flex justify-end mb-4">
+              <input
+                type="text"
+                placeholder="Buscar"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="p-2 border rounded"
+              />
+            </div>
+
             <DataTableBase
               columns={columns}
-              data={caseData}
+              data={filteredData}
               pagination
               selectableRows
               paginationPerPage={10}

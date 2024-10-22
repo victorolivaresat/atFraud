@@ -1,18 +1,20 @@
+import { getDocumentsByCaseId, addDocumentToCase } from "../../api/documentApi";
 import { getCaseById, updateCaseEvaluation } from "../../api/caseApi";
 import { getAllFraudMotives } from "../../api/fraudMotiveApi";
-import { getAllStatuses } from "../../api/statusApi";
-import { getAlertsByCaseId } from "../../api/alertApi";
-import { getDocumentsByCaseId } from "../../api/documentApi";
+import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect, useCallback } from "react";
-import { useNavigate,useParams } from "react-router-dom";
-import { useDropzone } from "react-dropzone";
-import { toast } from "react-toastify";
+import { getAlertsByCaseId } from "../../api/alertApi";
+import { getAllStatuses } from "../../api/statusApi";
 import DataTableBase from "../../utils/DataTable";
+import { useDropzone } from "react-dropzone";
+import Editor from "react-simple-wysiwyg";
 import { MdApps } from "react-icons/md";
-import Editor from 'react-simple-wysiwyg';
+import { toast } from "react-toastify";
 
 const Evaluation = () => {
+
   let { idCase } = useParams();
+  
   const [caseData, setCaseData] = useState({
     companyName: "",
     analystName: "",
@@ -26,17 +28,50 @@ const Evaluation = () => {
     commentAnalyst: "",
     amount: "",
   });
-  const [statuses, setStatuses] = useState([]);
+  
   const [fraudMotives, setFraudMotives] = useState([]);
-  const [alerts, setAlerts] = useState([]);
   const [documents, setDocuments] = useState([]);
   const urlBase = import.meta.env.VITE_URL_BASE;
+  const [statuses, setStatuses] = useState([]);
+  const [alerts, setAlerts] = useState([]);
   const navigate = useNavigate();
 
-  const onDrop = useCallback((acceptedFiles) => {
-    console.log(acceptedFiles);
-  }, []);
-
+  const onDrop = useCallback(
+    async (acceptedFiles) => {
+      if (acceptedFiles.length === 0) {
+        toast.error("No se seleccionaron archivos.");
+        return;
+      }
+      
+      try {
+        for (let i = 0; i < acceptedFiles.length; i++) {
+          const formData = new FormData();
+          
+          formData.append("document", acceptedFiles[i]);
+          formData.append("caseId", idCase);
+          formData.append("flgEvaluation", true);
+          formData.append("analystId", 1);
+  
+          console.log("formData caseId:", formData.get("caseId"));
+          console.log("formData flgEvaluation:", formData.get("flgEvaluation"));
+          console.log("formData analystId:", formData.get("analystId"));
+          console.log("formData document:", acceptedFiles[i].name);
+  
+          const response = await addDocumentToCase(formData);
+          console.log("Documento subido:", response.data);
+        }
+  
+        toast.success("Todos los documentos se han subido exitosamente");
+  
+        fetchDocumentData(idCase);
+      } catch (error) {
+        toast.error("Error subiendo los documentos");
+        console.error("Error subiendo los documentos:", error);
+      }
+    },
+    [idCase]
+  );
+  
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   const handleCancelClick = () => {
@@ -61,31 +96,26 @@ const Evaluation = () => {
 
   const fetchAlertData = async (idCase) => {
     const data = await getAlertsByCaseId(idCase);
-    // console.log(data);
     setAlerts(data);
   };
 
   const fetchDocumentData = async (idCase) => {
     const data = await getDocumentsByCaseId(idCase);
-    // console.log(data);
     setDocuments(data);
   };
 
   const fetchCaseData = async (idCase) => {
     const data = await getCaseById(idCase);
-    // console.log(data);
     setCaseData(data);
   };
 
   const fetchStatusesData = async () => {
     const data = await getAllStatuses();
-    // console.log(data);
     setStatuses(data);
   };
 
   const fetchFraudMotivesData = async () => {
     const data = await getAllFraudMotives();
-    // console.log(data);
     setFraudMotives(data);
   };
 
@@ -111,14 +141,14 @@ const Evaluation = () => {
           ?.statusId
       );
       toast.success("Evaluación actualizada exitosamente");
-      console.log("Actualización exitosa:", updatedCase);
+      console.log("Caso actualizado:", updatedCase);
       navigate(urlBase + "home");
     } catch (error) {
       console.error("Error actualizando la evaluación del caso:", error);
     }
   };
 
-  const columnsControles = [
+  const columnsControls = [
     {
       cell: () => <MdApps style={{ fill: "#43a047" }} />,
       width: "50px",
@@ -147,6 +177,7 @@ const Evaluation = () => {
       sortable: true,
     },
   ];
+
   const columnsDocuments = [
     {
       cell: () => <MdApps style={{ fill: "#43a047" }} />,
@@ -175,10 +206,7 @@ const Evaluation = () => {
   return (
     <div className="mt-1">
       <form className="my-1" onSubmit={handleSubmit}>
-        {/* #1 */}
-
         <div className=" flex flex-row gap-x-4">
-          {/* #1.1 */}
           <div className="flex flex-col w-1/2 mt-5  p-8 bg-white rounded-lg shadow dark:border  dark:bg-gray-800 dark:border-gray-700 ">
             <h1 className="text-1xl mb-3 md:text-4xl font-bold dark:text-gray-100">
               Evaluación | #Caso{" "}
@@ -187,7 +215,6 @@ const Evaluation = () => {
 
             <div>
               <div className="flex flex-wrap -mx-3 mb-6">
-                {/* Empresa */}
                 <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                   <label
                     className="block uppercase tracking-wide dark:text-gray-50 text-gray-700 text-xs font-bold mb-2"
@@ -204,7 +231,6 @@ const Evaluation = () => {
                     readOnly
                   />
                 </div>
-                {/* Analista */}
                 <div className="w-full md:w-1/3 px-3">
                   <label
                     className="block uppercase tracking-wide dark:text-gray-50 text-gray-700 text-xs font-bold mb-2"
@@ -222,7 +248,6 @@ const Evaluation = () => {
                     readOnly
                   />
                 </div>
-                {/* Codigo Cliente */}
                 <div className="w-full md:w-1/3 px-3">
                   <label
                     className="block uppercase tracking-wide dark:text-gray-50 text-gray-700 text-xs font-bold mb-2"
@@ -240,7 +265,6 @@ const Evaluation = () => {
                 </div>
               </div>
               <div className="flex flex-wrap -mx-3 mb-6">
-                {/* Nombre Cliente */}
                 <div className="w-full md:w-1/3 px-3">
                   <label
                     className="block uppercase tracking-wide dark:text-gray-50 text-gray-700 text-xs font-bold mb-2"
@@ -258,7 +282,6 @@ const Evaluation = () => {
                     readOnly
                   />
                 </div>
-                {/* Fecha Generacion */}
                 <div className="w-full md:w-1/3 px-3">
                   <label
                     className="block uppercase tracking-wide dark:text-gray-50 text-gray-700 text-xs font-bold mb-2"
@@ -274,7 +297,6 @@ const Evaluation = () => {
                     readOnly
                   />
                 </div>
-                {/* Fecha Ini Evaluacion */}
                 <div className="w-full md:w-1/3 px-3">
                   <label
                     className="block uppercase tracking-wide dark:text-gray-50 text-gray-700 text-xs font-bold mb-2"
@@ -292,7 +314,6 @@ const Evaluation = () => {
                 </div>
               </div>
               <div className="flex flex-wrap -mx-3 mb-6">
-                {/* Monto */}
                 <div className="w-full md:w-1/3 px-3">
                   <label
                     className="block uppercase tracking-wide dark:text-gray-50 text-gray-700 text-xs font-bold mb-2"
@@ -308,7 +329,6 @@ const Evaluation = () => {
                     onChange={handleAmountChange}
                   />
                 </div>
-                {/* Motivo de Fraude */}
                 <div className="w-full md:w-1/3 px-3">
                   <label
                     className="block uppercase tracking-wide dark:text-gray-50 text-gray-700 text-xs font-bold mb-2"
@@ -332,7 +352,6 @@ const Evaluation = () => {
                     ))}
                   </select>
                 </div>
-                {/* Status */}
                 <div className="w-full md:w-1/3 px-3">
                   <label
                     className="block uppercase tracking-wide dark:text-gray-50 text-gray-700 text-xs font-bold mb-2"
@@ -355,7 +374,6 @@ const Evaluation = () => {
                 </div>
               </div>
               <div className="flex flex-wrap -mx-3 mb-2">
-                {/* Comentario Analista */}
                 <div className="w-full px-3 mb-6 md:mb-0">
                   <label
                     className="uppercase tracking-wide dark:text-gray-50 text-gray-700 text-xs font-bold mb-2"
@@ -363,19 +381,20 @@ const Evaluation = () => {
                   >
                     Comentario Analista
                   </label>
-                  {/* <textarea
-                    className="w-full text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white "
-                    id="grid-ComentarioAnalista"
-                    type="text"
-                    // value={caseData.commentAnalyst || ""}{html}
+                  <Editor
+                    containerProps={{
+                      style: {
+                        resize: "vertical",
+                        height: "350px",
+                        overflow: "auto",
+                      },
+                      className: "dark:text-gray-700 dark:bg-gray-100",
+                    }}
+                    value={caseData.commentAnalyst || ""}
                     onChange={handleCommentChange}
-                  /> */}
-                  <Editor containerProps={{ style: { resize: 'vertical', height: '500px', overflow: 'auto' } }} 
-                          value={caseData.commentAnalyst || ""} 
-                          onChange={handleCommentChange} />
+                  />
                 </div>
               </div>
-              {/* Botones */}
               <div className="flex flex-wrap -mx-3 mb-2">
                 <button
                   type="submit"
@@ -392,9 +411,7 @@ const Evaluation = () => {
               </div>
             </div>
           </div>
-          {/* #2 */}
           <div className="flex flex-col w-1/2">
-            {/* #1.2     Controles      */}
             <div className="mt-5 h-full  p-8 bg-white rounded-lg shadow dark:border  dark:bg-gray-800 dark:border-gray-700  ">
               <h1 className="text-1xl mb-3 md:text-2xl font-bold dark:text-gray-100">
                 Controles
@@ -402,17 +419,15 @@ const Evaluation = () => {
 
               <div>
                 <div className="flex flex-wrap -mx-3 mb-6">
-                  
                   <DataTableBase
-                  columns={columnsControles}
-                  data={alerts}
-                  paginationPerPage={10}
-                />
+                    columns={columnsControls}
+                    data={alerts}
+                    paginationPerPage={10}
+                  />
                 </div>
               </div>
             </div>
 
-            {/* #2.1 Documentos*/}
             <div className="mt-5 h-full  p-8 bg-white rounded-lg shadow dark:border  dark:bg-gray-800 dark:border-gray-700  ">
               <h5 className="text-1xl mb-3 md:text-2xl font-bold dark:text-gray-100">
                 Documentos
@@ -438,13 +453,11 @@ const Evaluation = () => {
                   )}
                 </div>
                 <div className="w-full  mt-5 bg-white rounded-lg shadow-lg mb-5 ">
-                  
-
                   <DataTableBase
-                  columns={columnsDocuments}
-                  data={documents}
-                  selectableRows
-                />
+                    columns={columnsDocuments}
+                    data={documents}
+                    selectableRows
+                  />
                 </div>
               </div>
             </div>
