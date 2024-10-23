@@ -18,7 +18,8 @@ const AppRoutes = () => (
       <Route path={urlBase + 'evaluations'} element={<RouteTransition><EvaluationMasive /></RouteTransition>} /> 
       <Route path={urlBase + 'evaluation/:idCase'} element={<RouteTransition><Evaluation /></RouteTransition>} />
       <Route path={urlBase + 'test'} element={<RouteTransition><Test /></RouteTransition>} />
-      <Route path={urlBase + '*'} element={<RouteTransition><NotFound /></RouteTransition>} />
+      {/* <Route path={urlBase + '*'} element={<RouteTransition><NotFound /></RouteTransition>} /> */}
+      <Route path={urlBase + '*'} element={<Navigate to={urlBase + 'home'} />} />
     </Route>
     <Route path="*" element={<Navigate to={urlBase + 'login'} />} />
   </Routes>

@@ -2,10 +2,11 @@
   "name": "frontend_react",
   "private": true,
   "version": "0.0.0",
+  "homepage": "http://192.168.21.35:40/",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && copy web.config dist\\",
     "lint": "eslint .",
     "preview": "vite preview"
   },

@@ -1,7 +1,6 @@
 {
   "name": "api_total_secure",
   "version": "1.0.0",
-  "homepage": "http://192.168.21.35/totalSecure/",
   "description": "Total Secure",
   "main": "src/index.js",
   "scripts": {
