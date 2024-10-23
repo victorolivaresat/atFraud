@@ -20,8 +20,8 @@ module.exports = {
       EXPIRES_IN: "1d",
     },
     CORS: {
-      ORIGIN: "http://localhost:5173",
-      // ORIGIN: "http://192.168.21.35",
+      //ORIGIN: "http://localhost:5173",
+       ORIGIN: "http://192.168.21.35:40",
     },
     GITHUB: {
       token: "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"
