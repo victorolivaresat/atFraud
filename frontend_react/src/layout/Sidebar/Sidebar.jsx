@@ -10,20 +10,24 @@ import {
 } from "react-icons/ri";
 
 const Sidebar = () => {
+  
   const [showMenu, setShowMenu] = useState(false);
+  const urlBase = import.meta.env.VITE_URL_BASE;
   const { currentUser } = useAuth();
+
+  console.log(currentUser);
 
   return (
     <>
       <div
-        className={`bg-red-900 h-full fixed lg:static w-[80%] md:w-[40%] lg:w-full transition-all z-50 duration-300 ${
+        className={`bg-red-800 h-full fixed lg:static w-[80%] md:w-[40%] lg:w-full transition-all z-50 duration-300 ${
           showMenu ? "left-0" : "-left-full"
         }`}
       >
         {/* Profile */}
         <div className="flex flex-col items-center justify-center p-8 gap-2 h-[30vh]">
           <img
-            src="https://avatar.iran.liara.run/public/boy"
+            src={`https://avatar.iran.liara.run/username?username=${currentUser.name}+${currentUser.name}`}
             className="w-20 h-20 object-cover rounded-full ring-2 ring-gray-300"
           />
           <h1 className="text-xl text-white font-bold">{ currentUser.name }</h1>
@@ -35,7 +39,7 @@ const Sidebar = () => {
          <div className="bg-gray-900 p-8 rounded-tr-[100px] h-[70vh] {/*overflow-y-scroll*/} flex flex-col justify-between gap-8"> 
           <nav className="flex flex-col gap-8">
             <a
-              href="/home"
+              href={urlBase + "home"} 
               className="flex items-center gap-4 text-white px-4 rounded-xl hover:bg-primary-900/50 transition-colors"
             >
               <RiHome3Line /> Home

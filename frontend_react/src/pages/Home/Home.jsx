@@ -120,7 +120,7 @@ const Home = () => {
 
       {/* Section 2 */}
 
-      <section className="grid grid-cols-1 md:grid-cols-1 mt-10 gap-8">
+      <section className="grid grid-cols-2 md:grid-cols-1 mt-10 gap-8">
         <div className="relative overflow-x-auto rounded-xl">
           <div className="overflow-x-auto relative shadow-md py-3 px-5">
             <div className="flex justify-end mb-4">
