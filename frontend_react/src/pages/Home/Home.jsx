@@ -102,16 +102,16 @@ const Home = () => {
   return (
     <div>
       {/* Section 1 */}
-      <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 mt-10 gap-8">
+      <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 mt-10 gap-8">
         {/* Card 1 */}
-        <div className="bg-primary-100 p-8 rounded-xl text-gray-300 flex flex-col gap-6">
+        <div className="bg-yellow-500 p-8 rounded-xl text-gray-700 flex flex-col gap-6">
           <RiFileTextFill className="text-5xl" />
           <h4 className="text-2xl">Eval Pendientes</h4>
-          <span className="text-5xl text-white">{pendingCount}</span>
+          <span className="text-5xl">{pendingCount}</span>
         </div>
 
         {/* Card 2 */}
-        <div className="bg-primary-100 p-8 rounded-xl text-gray-300 flex flex-col gap-6">
+        <div className="bg-green-500 p-8 rounded-xl text-gray-300 flex flex-col gap-6">
           <RiAlarmWarningFill className="text-5xl" />
           <h4 className="text-2xl">Atendidas</h4>
           <span className="text-5xl text-white">{attendedCount}</span>
@@ -122,7 +122,7 @@ const Home = () => {
 
       <section className="grid grid-cols-1 md:grid-cols-1 mt-10 gap-8">
         <div className="relative overflow-x-auto rounded-xl">
-          <div className="overflow-x-auto relative shadow-md p-8 bg-white">
+          <div className="overflow-x-auto relative shadow-md py-3 px-5">
             <div className="flex justify-end mb-4">
               <input
                 type="text"
@@ -137,7 +137,6 @@ const Home = () => {
               columns={columns}
               data={filteredData}
               pagination
-              selectableRows
               paginationPerPage={10}
             />
           </div>
